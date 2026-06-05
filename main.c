@@ -3,7 +3,6 @@
 
 int main()
 {
-    printf("hello world\n");
-
+    printf("Library Management System\n");
     return 0;
 }
