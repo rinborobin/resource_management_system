@@ -10,7 +10,7 @@ The Library Management System is a desktop application designed to help libraria
 
 ### 1. Dashboard
 
-~~ Display total number of books ‍‍~~
+~~Display total number of books~~
 
 - Display total number of members
 - Display number of borrowed books
