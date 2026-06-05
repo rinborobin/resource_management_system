@@ -1,133 +1,241 @@
-# Library Management System
+Library Management System - Development Plan
+Project Goal
 
-## Project Overview
+Develop a Library Management System that allows librarians to manage books, members, and borrowing activities.
 
-The Library Management System is a desktop application designed to help librarians manage books, members, and borrowing activities efficiently. The system provides a graphical user interface (GUI) for performing common library operations.
+The project will be developed in two phases:
 
----
+CLI Version (Core Functionality)
+GUI Version (User Interface Enhancement)
 
-## Features
+The CLI version must be fully functional before GUI development begins.
 
-### 1. Dashboard
+Phase 1 - Core System Design
+Data Structures
+Book
+Book ID
+Title
+Author
+ISBN
+Category
+Availability Status
+Member
+Member ID
+First Name
+Last Name
+Phone Number
+Borrow Record
+Record ID
+Member ID
+Book ID
+Borrow Date
+Return Date
+Phase 2 - CLI Implementation
+Main Menu
+Library Management System
 
-~~Display total number of books~~
+1. Book Management
+2. Member Management
+3. Borrow Book
+4. Return Book
+5. Reports
+6. Exit
+   Book Management Module
+   Features
+   Add Book
+   Enter book information
+   Validate required fields
+   Store book in system
+   Edit Book
+   Search book by ID
+   Modify information
+   Delete Book
+   Search book by ID
+   Confirm deletion
+   Search Book
+   Search by:
+   Book ID
+   Title
+   Author
+   ISBN
+   View All Books
+   Display complete book list
+   Member Management Module
+   Features
+   Add Member
+   Register new member
+   Edit Member
+   Modify member information
+   Delete Member
+   Remove member
+   Search Member
+   Search by:
+   Member ID
+   Name
+   View All Members
+   Display all members
+   Borrow Book Module
+   Features
+   Borrow Book
+   Select member
+   Select book
+   Verify availability
+   Create borrow record
+   Update book status
+   Validation
+   Member must exist
+   Book must exist
+   Book must be available
+   Return Book Module
+   Features
+   Return Book
+   Locate borrowing record
+   Record return date
+   Update availability status
+   Validation
+   Borrow record must exist
+   Reports Module
+   Statistics
 
-- Display total number of members
-- Display number of borrowed books
-- Display number of available books
+Display:
 
-### 2. Book Management
+Total Books
+Available Books
+Borrowed Books
+Total Members
+Phase 3 - Data Persistence
+File Storage
+Books File
 
-- Add a new book
-- Edit book information
-- Delete a book
-- View all books
-- Search books by:
-  - Title
-  - Author
-  - ISBN
-  - Category
+Store all books.
 
-- View book availability status
+Members File
 
-### 3. Member Management
+Store all members.
 
-- Register a new member
-- Edit member information
-- Delete a member
-- View all members
-- Search members by:
-  - Member ID
-  - Name
+Borrow Records File
 
-### 4. Borrowing Management
+Store all borrowing records.
 
-- Borrow a book
-- Assign a book to a member
-- Record borrowing date
-- View currently borrowed books
-- Prevent borrowing unavailable books
+Loading Process
 
-### 5. Return Management
+Program Start:
 
-- Return a borrowed book
-- Update book availability
-- Record return date
-- View borrowing history
+Load books
+Load members
+Load records
+Saving Process
 
-### 6. Search and Filter
+When:
 
-- Search books
-- Search members
-- Filter available books
-- Filter borrowed books
+Adding data
+Editing data
+Deleting data
+Borrowing books
+Returning books
+Program exit
+Phase 4 - Testing
+Test Cases
+Book Management
+Add book
+Edit book
+Delete book
+Search book
+Member Management
+Add member
+Edit member
+Delete member
+Search member
+Borrowing
+Borrow available book
+Attempt borrowing unavailable book
+Returning
+Return borrowed book
+Attempt returning invalid record
+File Handling
+Save data
+Load data
+Data consistency
+Phase 5 - GUI Upgrade
 
-### 7. Data Validation
+The GUI will be built after the CLI version is complete.
 
-- Prevent duplicate ISBN entries
-- Validate member information
-- Validate required fields
-- Display error messages for invalid inputs
+Main Window
 
-### 8. Reports and Statistics
+Display:
 
-- Total books in library
-- Total available books
-- Total borrowed books
-- Total registered members
+Total Books
+Available Books
+Borrowed Books
+Total Members
 
-### 9. Data Storage
+Buttons:
 
-- Save data to files
-- Load data from files on startup
-- Update records automatically after modifications
+Manage Books
+Manage Members
+Borrow Book
+Return Book
+Reports
+Exit
+Book Management Window
 
-### 10. User Interface
+Features:
 
-- Main dashboard window
-- Book management window
-- Member management window
-- Borrow/Return window
-- Search functionality
-- Confirmation dialogs for critical actions
+Add Book
+Edit Book
+Delete Book
+Search Book
+View Books
+Member Management Window
 
----
+Features:
 
-## Data Structures
+Add Member
+Edit Member
+Delete Member
+Search Member
+View Members
+Borrow Window
 
-### Book
+Features:
 
-- Book ID
-- Title
-- Author
-- ISBN
-- Category
-- Availability Status
+Select Member
+Select Book
+Borrow Book
+Return Window
 
-### Member
+Features:
 
-- Member ID
-- First Name
-- Last Name
-- Phone Number
-- Email
+Select Borrow Record
+Return Book
+Reports Window
 
-### Borrow Record
+Display:
 
-- Record ID
-- Member ID
-- Book ID
-- Borrow Date
-- Return Date
-- Status
+Statistics
+Borrowing Summary
+Development Priority
 
----
+Priority 1:
 
-## Future Improvements
+Data Structures
+Book Management
+Member Management
 
-- User authentication and login
-- Fine calculation for overdue books
-- Barcode scanning
-- Multiple librarian accounts
-- Database integration
-- Book reservation system
+Priority 2:
+
+Borrow Book
+Return Book
+
+Priority 3:
+
+File Handling
+Reports
+
+Priority 4:
+
+GUI Integration
+
+Priority 5:
+
+UI Improvements and Enhancements
