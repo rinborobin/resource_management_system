@@ -5,8 +5,9 @@
 int main()
 {
     bool isRunning = true;
-    printf("Library Management System\n");
-    while(isRunning){
+    printf("\n == Library Management System ==\n");
+    while (isRunning)
+    {
         int choice;
         printf("1. Book Management\n");
         printf("2. Member Management\n");
@@ -17,27 +18,28 @@ int main()
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
-        switch(choice){
-            case 1:
-                // Book Management
-                break;
-            case 2:
-                // Member Management
-                break;
-            case 3:
-                // Borrow Book
-                break;
-            case 4:
-                // Return Book
-                break;
-            case 5:
-                // Report
-                break;
-            case 6:
-                isRunning = false;
-                break;
-            default:
-                printf("Invalid choice. Please try again.\n");
+        switch (choice)
+        {
+        case 1:
+            // Book Management
+            break;
+        case 2:
+            // Member Management
+            break;
+        case 3:
+            // Borrow Book
+            break;
+        case 4:
+            // Return Book
+            break;
+        case 5:
+            // Report
+            break;
+        case 6:
+            isRunning = false;
+            break;
+        default:
+            printf("Invalid choice. Please try again.\n");
         }
     }
 
