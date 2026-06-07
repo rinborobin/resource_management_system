@@ -1,4 +1,19 @@
-Resource Management System
+# Library Management System
 
-Program Compling: inside the main directory -> gcc \*.c -o "program_name"
-Run the complied program: ./"program_name"
+A brief description of what this project does and who it's for
+
+## Compiling
+
+To compile the program, run the following command inside the main directory
+
+```bash
+  gcc *.c -o <program_name>
+```
+
+## Running the program
+
+After compiling
+
+```bash
+  ./<program_name>
+```
