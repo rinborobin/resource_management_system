@@ -3,6 +3,7 @@
 
 #include "data.h"
 
+void memberMenu(Library *lib);
 void addMember(Library *lib);
 void viewMembers(Library *lib);
 void updateMember(Library *lib);
