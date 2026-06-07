@@ -3,7 +3,7 @@
 
 typedef struct
 {
-    int bookID;
+    int book_id;
     char title[100];
     char author[100];
     int quantity;
@@ -12,28 +12,34 @@ typedef struct
 
 typedef struct
 {
-    int memberID;
+    int member_id;
     char name[100];
 } Member;
 
 typedef struct
 {
-    int borrowID;
-    int bookID;
-    int memberID;
+    int borrow_id;
+    int book_id;
+    int member_id;
     int returned;
 } BorrowRecord;
 
 typedef struct
 {
-    Book books[100];
-    int bookCount;
+    Book *books;
+    int book_capacity;
+    int book_count;
+    int next_book_id;
 
-    Member members[100];
-    int memberCount;
+    Member *members;
+    int member_capacity;
+    int member_count;
+    int next_member_id;
 
-    BorrowRecord records[200];
-    int recordCount;
+    BorrowRecord *records;
+    int record_capacity;
+    int record_count;
+    int next_record_id;
 } Library;
 
 #endif
