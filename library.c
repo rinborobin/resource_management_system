@@ -12,22 +12,41 @@ void initLibrary(Library *lib)
 {
     lib->book_capacity = 10;
     lib->books = malloc(lib->book_capacity * sizeof(Book));
+    if (lib->books == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
     lib->book_count = 0;
     lib->next_book_id = 1001;
 
     lib->member_capacity = 10;
+    lib->members = malloc(lib->member_capacity * sizeof(Member));
+    if (lib->members == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
     lib->member_count = 0;
     lib->next_member_id = 2001;
 
     lib->record_capacity = 10;
+    lib->records = malloc(lib->record_capacity * sizeof(BorrowRecord));
+    if (lib->records == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        exit(1);
+    }
     lib->record_count = 0;
     lib->next_record_id = 3001;
 };
-void freeLibrary(Library *lib) {};
+void freeLibrary(Library *lib) {
 
-void bookMenu(Library *lib);
-void memberMenu(Library *lib);
-void borrowMenu(Library *lib);
+};
+
+void bookMenu(Library *lib);   //
+void memberMenu(Library *lib); // Ly Sievminh
+void borrowMenu(Library *lib); //
 
 void mainMenu(Library *lib)
 {
@@ -45,7 +64,7 @@ void mainMenu(Library *lib)
         printf("0. Exit\n");
         printf("=================================\n");
         printf("Enter choice: ");
-        scanf("%d", &choice);
+        scanf(" %d", &choice);
 
         switch (choice)
         {
@@ -77,4 +96,6 @@ void mainMenu(Library *lib)
 
     } while (choice != 0);
 }
-void displaySummary(Library *lib) {};
+void displaySummary(Library *lib) // Ly Sievminh
+{
+}
