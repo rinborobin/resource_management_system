@@ -4,10 +4,10 @@
 #include "data.h"
 #include "library.h"
 
+Library lib = {0};
+
 int main()
 {
-
-    Library lib = {0};
 
     mainMenu(&lib);
 
