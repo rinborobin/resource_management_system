@@ -1,11 +1,29 @@
 #include "library.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 #include <stdio.h>
 #include "library.h"
 #include "book.h"
 #include "member.h"
 #include "borrow.h"
+
+void initLibrary(Library *lib)
+{
+    lib->book_capacity = 10;
+    lib->books = malloc(lib->book_capacity * sizeof(Book));
+    lib->book_count = 0;
+    lib->next_book_id = 1001;
+
+    lib->member_capacity = 10;
+    lib->member_count = 0;
+    lib->next_member_id = 2001;
+
+    lib->record_capacity = 10;
+    lib->record_count = 0;
+    lib->next_record_id = 3001;
+};
+void freeLibrary(Library *lib) {};
 
 void bookMenu(Library *lib);
 void memberMenu(Library *lib);
@@ -44,9 +62,9 @@ void mainMenu(Library *lib)
             break;
 
         case 4:
-            printf("\nTotal Books   : %d\n", lib->bookCount);
-            printf("Total Members : %d\n", lib->memberCount);
-            printf("Total Records : %d\n", lib->recordCount);
+            printf("\nTotal Books   : %d\n", lib->book_count);
+            printf("Total Members : %d\n", lib->member_count);
+            printf("Total Records : %d\n", lib->record_count);
             break;
 
         case 0:
