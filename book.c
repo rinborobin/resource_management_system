@@ -59,8 +59,8 @@ Book inputBook(Library *lib)
     printf("Enter the author name: ");
     fgets(author, sizeof(author), stdin);
 
-    book.book_id = lib->next_book_id;
-    lib->next_book_id++;
+    // book.book_id = lib->next_book_id;
+    // lib->next_book_id++;
 
     printf("Enter the quantity of book: ");
     scanf(" %d", &quantity);
@@ -96,6 +96,9 @@ void addBook(Library *lib)
 
     Book book = inputBook(lib);
 
+    book.book_id = lib->next_book_id;
+    lib->next_book_id++;
+
     lib->books[lib->book_count] = book;
     lib->book_count++;
 
@@ -104,7 +107,7 @@ void addBook(Library *lib)
 
 void viewBooks(Library *lib, int index)
 {
-    printf("\nBook ID: %d\nBook Name: %sQuantity: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].quantity);
+    printf("\nBook ID: %d\nBook Name: %sAuthor Name: %s\nQuantity: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity);
 }
 void viewAllBooks(Library *lib)
 {
@@ -113,12 +116,28 @@ void viewAllBooks(Library *lib)
         viewBooks(lib, i);
     }
 }
-void searchBook(Library *lib) // Ly Sievminh
+int searchBook(Library *lib, int book_id) // Ly Sievminh
 {
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        if (lib->books[i].book_id == book_id)
+        {
+            return i;
+        }
+    }
+    printf("Book not found.\n");
+    return -1;
 }
 
-void updateBook(Library *lib)
+void updateBook(Library *lib, int book_id)
 {
+    int index = searchBook(lib, book_id);
+
+    Book book = inputBook(lib);
+    book.book_id = lib->books[index].book_id;
+    lib->books[index] = book;
+
+    printf("Book updated successfully!\n");
 }
 
 void removeBook(Library *lib)
@@ -129,7 +148,7 @@ void displayBookSummary(Library *lib) {}; // Ly Sievminh
 void bookMenu(Library *lib)
 {
     int choice;
-
+    int book_id;
     do
     {
         printf("\n=================================\n");
@@ -156,11 +175,15 @@ void bookMenu(Library *lib)
             break;
 
         case 3:
-            searchBook(lib);
+            printf("Enter Book ID: ");
+            scanf(" %d", &book_id);
+            searchBook(lib, book_id);
             break;
 
         case 4:
-            updateBook(lib);
+            printf("Enter Book ID: ");
+            scanf(" %d", &book_id);
+            updateBook(lib, book_id);
             break;
 
         case 5:

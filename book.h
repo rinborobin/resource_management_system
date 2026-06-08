@@ -6,9 +6,9 @@
 Book inputBook(Library *lib);
 void bookMenu(Library *lib);
 void addBook(Library *lib);
-void searchBook(Library *lib);
+int searchBook(Library *lib, int book_id);
 void viewBooks(Library *lib, int index);
-void updateBook(Library *lib);
+void updateBook(Library *lib, int book_id);
 void removeBook(Library *lib);
 
 #endif
