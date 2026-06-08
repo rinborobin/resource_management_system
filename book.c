@@ -125,7 +125,27 @@ void removeBook(Library *lib)
 {
 }
 
-void displayBookSummary(Library *lib) {}; // Ly Sievminh
+void displayBookSummary(Library *lib)
+{
+    int totalTitles = lib->book_count;
+    int totalCopies = 0;
+    int totalAvailable = 0;
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        totalCopies += lib->books[i].quantity;
+        totalAvailable += lib->books[i].available;
+    }
+    int totalBorrowed = totalCopies - totalAvailable;
+
+    printf("\n======================================================================\n");
+    printf("                          LIBRARY SUMMARY REPORT\n");
+    printf("======================================================================\n");
+    printf("Total book titles: %d\n", totalTitles);
+    printf("total book copies: %d\n", totalCopies);
+    printf("total book available: %d\n", totalAvailable);
+    printf("total book borrowed: %d\n", totalBorrowed);
+
+}; // Ly Sievminh
 void bookMenu(Library *lib)
 {
     int choice;
