@@ -10,6 +10,7 @@ int main()
 {
     initLibrary(&lib);
     mainMenu(&lib);
+    freeLibrary(&lib);
 
     return 0;
 }
