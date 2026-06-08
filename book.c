@@ -78,7 +78,7 @@ void viewAllBooks(Library *lib)
         viewBooks(lib, i);
     }
 }
-int searchBook(Library *lib, int book_id) // Ly Sievminh
+int searchBook(Library *lib, int book_id)
 {
     for (int i = 0; i < lib->book_count; i++)
     {
@@ -117,23 +117,23 @@ void removeBook(Library *lib, int book_id)
 
 void displayBookSummary(Library *lib)
 {
-    int totalTitles = lib->book_count;
-    int totalCopies = 0;
-    int totalAvailable = 0;
+    int total_titles = lib->book_count;
+    int total_copies = 0;
+    int total_available = 0;
     for (int i = 0; i < lib->book_count; i++)
     {
-        totalCopies += lib->books[i].quantity;
-        totalAvailable += lib->books[i].available;
+        total_copies += lib->books[i].quantity;
+        total_available += lib->books[i].available;
     }
-    int totalBorrowed = totalCopies - totalAvailable;
+    int total_borrowed = total_copies - total_available;
 
     printf("\n======================================================================\n");
-    printf("                          LIBRARY SUMMARY REPORT\n");
+    printf("                          BOOK SUMMARY REPORT\n");
     printf("======================================================================\n");
-    printf("Total book titles: %d\n", totalTitles);
-    printf("total book copies: %d\n", totalCopies);
-    printf("total book available: %d\n", totalAvailable);
-    printf("total book borrowed: %d\n", totalBorrowed);
+    printf("Total book titles: %d\n", total_titles);
+    printf("Total book copies: %d\n", total_copies);
+    printf("Total book available: %d\n", total_available);
+    printf("Total book borrowed: %d\n", total_borrowed);
 
 }; // Ly Sievminh
 void bookMenu(Library *lib)
@@ -150,6 +150,7 @@ void bookMenu(Library *lib)
         printf("3. Search Book\n");
         printf("4. Update Book\n");
         printf("5. Remove Book\n");
+        printf("6. Book Summary\n");
         printf("0. Back\n");
         printf("=================================\n");
         printf("Enter choice: ");
@@ -181,6 +182,10 @@ void bookMenu(Library *lib)
             printf("Enter Book ID: ");
             scanf(" %d", &book_id);
             removeBook(lib, book_id);
+            break;
+
+        case 6:
+            displayBookSummary(lib);
             break;
 
         case 0:

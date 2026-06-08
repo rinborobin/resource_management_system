@@ -40,7 +40,8 @@ void initLibrary(Library *lib)
     lib->record_count = 0;
     lib->next_record_id = 3001;
 };
-void freeLibrary(Library *lib) {
+void freeLibrary(Library *lib)
+{
     free(lib->books);
     free(lib->members);
     free(lib->records);
@@ -51,6 +52,56 @@ void memberMenu(Library *lib); // Ly Sievminh
 void borrowMenu(Library *lib); //
 
 void displayBookSummary(Library *lib); // Ly Sievminh
+
+void summaryReport(Library *lib) // Ly Sievminh
+{
+    // displayBookSummary(lib);
+    /*
+    dISPLAY SUMMARY REPORT
+        - Total book titles
+        - Total book copies
+        - Total book available
+        - Total book borrowed
+
+        - Total members
+        - Total borrow records
+    */
+    int total_titles = lib->book_count;
+    int total_copies = 0;
+    int total_available = 0;
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        total_copies += lib->books[i].quantity;
+        total_available += lib->books[i].available;
+    }
+    int total_borrowed = total_copies - total_available;
+    int total_members = lib->member_count;
+    int total_records = lib->record_count;
+    int book_capacity = lib->book_capacity;
+    int books_stored = lib->book_count;
+
+    printf("\n=================================\n");
+    printf("        SUMMARY REPORT\n");
+    printf("=================================\n");
+    printf(" \n");
+    printf("Books");
+    printf("\n-----------------------------\n");
+    printf("\nTotal Book Titles   : %d\n", total_titles);
+    printf("Total Book Copies   : %d\n", total_copies);
+    printf("Total Available     : %d\n", total_available);
+    printf("Total Borrowed      : %d\n", total_borrowed);
+    printf("\n------------------------------\n");
+    printf("Members");
+    printf("\n------------------------------\n");
+    printf("\nTotal Members       : %d\n", total_members);
+    printf("Total Borrow Records: %d\n", total_records);
+    printf("\n------------------------------\n");
+    printf("System");
+    printf("\n------------------------------\n");
+    printf("\nBook Capacity       : %d\n", book_capacity);
+    printf("Books Stored         : %d\n", books_stored);
+    printf("\n=================================\n");
+}
 
 void mainMenu(Library *lib)
 {
@@ -88,7 +139,7 @@ void mainMenu(Library *lib)
             // printf("\nTotal Books   : %d\n", lib->book_count);
             // printf("Total Members : %d\n", lib->member_count);
             // printf("Total Records : %d\n", lib->record_count);
-            displayBookSummary(lib); // Ly Sievminh
+            summaryReport(lib); // Ly Sievminh
             break;
 
         case 0:
