@@ -108,7 +108,7 @@ void viewBooks(Library *lib, int index)
 }
 void viewAllBooks(Library *lib)
 {
-    for (int i = 0; i < lib->book_capacity; i++)
+    for (int i = 0; i < lib->book_count; i++)
     {
         viewBooks(lib, i);
     }

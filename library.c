@@ -41,7 +41,9 @@ void initLibrary(Library *lib)
     lib->next_record_id = 3001;
 };
 void freeLibrary(Library *lib) {
-
+    free(lib->books);
+    free(lib->members);
+    free(lib->records);
 };
 
 void bookMenu(Library *lib);   //
