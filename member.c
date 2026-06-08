@@ -97,6 +97,20 @@ void addMember(Library *lib)
 
     printf("Member added successfully!\n");
 }
+
+int searchMember(Library *lib, int member_id)
+{
+    for (int i = 0; i < lib->member_count; i++)
+    {
+        if (lib->members[i].member_id == member_id)
+        {
+            return i;
+        }
+    }
+
+    printf("Member not found.\n");
+    return -1;
+}
 void viewMembers(Library *lib) // Ly Sievmiinh
 {
 }
