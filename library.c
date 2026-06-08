@@ -50,6 +50,8 @@ void bookMenu(Library *lib);   //
 void memberMenu(Library *lib); // Ly Sievminh
 void borrowMenu(Library *lib); //
 
+void displayBookSummary(Library *lib); // Ly Sievminh
+
 void mainMenu(Library *lib)
 {
     int choice;
@@ -83,9 +85,10 @@ void mainMenu(Library *lib)
             break;
 
         case 4:
-            printf("\nTotal Books   : %d\n", lib->book_count);
-            printf("Total Members : %d\n", lib->member_count);
-            printf("Total Records : %d\n", lib->record_count);
+            // printf("\nTotal Books   : %d\n", lib->book_count);
+            // printf("Total Members : %d\n", lib->member_count);
+            // printf("Total Records : %d\n", lib->record_count);
+            displayBookSummary(lib); // Ly Sievminh
             break;
 
         case 0:
