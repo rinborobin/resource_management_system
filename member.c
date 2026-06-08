@@ -113,9 +113,34 @@ int searchMember(Library *lib, int member_id)
 }
 void viewMembers(Library *lib) // Ly Sievmiinh
 {
+    if (lib->member_count == 0)
+    {
+        printf("No members found.\n");
+        return;
+    }
+    for (int i = 0; i < lib->member_count; i++)
+    {
+        printf("ID: %d, Name: %s\n", lib->members[i].member_id, lib->members[i].name);
+    }
 }
 void updateMember(Library *lib)
 {
+    int member_id;
+    printf("Enter the member ID to update: \n");
+    scanf("%d", &member_id);
+
+    int index = searchMember(lib, member_id);
+    if(index == -1)
+    {
+        printf("Member not found.\n");
+        return;
+    }
+    Member updated= inputMember(lib, true);
+    updated.member_id = lib->members[index].member_id;
+    lib->members[index] = updated;
+    printf("Member updated successfully!\n");
+
+     
 }
 void removeMember(Library *lib)
 {
