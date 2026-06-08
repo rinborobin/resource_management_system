@@ -1,5 +1,6 @@
 #include "book.h"
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -44,7 +45,7 @@
 //     int next_record_id;
 // } Library;
 
-Book inputBook(Library *lib)
+Book inputBook(Library *lib, bool is_update)
 {
 
     getchar();
@@ -62,14 +63,16 @@ Book inputBook(Library *lib)
     // book.book_id = lib->next_book_id;
     // lib->next_book_id++;
 
-    printf("Enter the quantity of book: ");
-    scanf(" %d", &quantity);
-    getchar();
+    if (!is_update)
+    {
+        printf("Enter the quantity of book: ");
+        scanf(" %d", &quantity);
+        getchar();
+        book.quantity = quantity;
+    }
 
     strcpy(book.title, title);
     strcpy(book.author, author);
-
-    book.quantity = quantity;
 
     return book;
 }
@@ -94,7 +97,7 @@ void addBook(Library *lib)
         lib->book_capacity = new_capacity;
     }
 
-    Book book = inputBook(lib);
+    Book book = inputBook(lib, false);
 
     book.book_id = lib->next_book_id;
     lib->next_book_id++;
@@ -133,15 +136,24 @@ void updateBook(Library *lib, int book_id)
 {
     int index = searchBook(lib, book_id);
 
-    Book book = inputBook(lib);
+    Book book = inputBook(lib, true);
+
     book.book_id = lib->books[index].book_id;
+    book.quantity = lib->books[index].quantity;
     lib->books[index] = book;
 
     printf("Book updated successfully!\n");
 }
 
-void removeBook(Library *lib)
+void removeBook(Library *lib, int book_id)
 {
+    int index = searchBook(lib, book_id);
+
+    for (int i = index; i < lib->book_count; i++)
+    {
+        lib->books[i] = lib->books[i + 1];
+    }
+    lib->book_count--;
 }
 
 void displayBookSummary(Library *lib)
@@ -207,7 +219,9 @@ void bookMenu(Library *lib)
             break;
 
         case 5:
-            removeBook(lib);
+            printf("Enter Book ID: ");
+            scanf(" %d", &book_id);
+            removeBook(lib, book_id);
             break;
 
         case 0:
