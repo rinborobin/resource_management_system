@@ -98,8 +98,27 @@ void borrowBook(Library *lib, int member_id, int book_id)
 
     printf("Book: %d\nBorrowed By: %d", member_id, book_id);
 }
-void returnBook(Library *lib)
+void returnBook(Library *lib, int book_id, int member_id)
 {
+
+    int book_index = searchBook(lib, book_id);
+    int member_index = searchMember(lib, member_id);
+
+    bool search_validation = book_index != -1 && member_index != -1;
+
+    if (!search_validation)
+    {
+        printf("Book or member not found.\n");
+        return;
+    }
+
+    if (lib->books[book_index].available <= 0)
+    {
+        printf("Book unavailable.\n");
+        return;
+    }
+    lib->record_count--;
+    lib->books[book_index].available++;
 }
 
 void viewRecords(Library *lib) // Ly Sievminh
@@ -130,7 +149,11 @@ void borrowMenu(Library *lib) // Ly Sievminh
             borrowBook(lib, member_id, book_id);
             break;
         case 2:
-            returnBook(lib);
+            printf("Enter the book ID: ");
+            scanf(" %d", &book_id);
+            printf("Enter the member ID: ");
+            scanf(" %d", &member_id);
+            returnBook(lib, book_id, member_id);
             break;
         case 3:
             viewRecords(lib);

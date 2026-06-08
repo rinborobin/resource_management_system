@@ -69,7 +69,7 @@ void addBook(Library *lib)
 
 void viewBooks(Library *lib, int index)
 {
-    printf("\nBook ID: %d\nBook Name: %sAuthor Name: %s\nQuantity: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity);
+    printf("\nBook ID: %d\nBook Name: %s\nAuthor Name: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity, lib->books[index].available);
 }
 void viewAllBooks(Library *lib)
 {
