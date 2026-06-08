@@ -4,7 +4,7 @@
 #include "data.h"
 
 void borrowMenu(Library *lib);
-void borrowBook(Library *lib);
+void borrowBook(Library *lib, int member_id, int book_id);
 void returnBook(Library *lib);
 void viewRecords(Library *lib);
 
