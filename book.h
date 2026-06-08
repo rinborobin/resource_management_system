@@ -10,5 +10,6 @@ int searchBook(Library *lib, int book_id);
 void viewBooks(Library *lib, int index);
 void updateBook(Library *lib, int book_id);
 void removeBook(Library *lib);
+void displayBookSummary(Library *lib); // Ly Sievminh
 
 #endif
