@@ -4,47 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-// typedef struct
-// {
-//     int book_id;
-//     char title[100];
-//     char author[100];
-//     int quantity;
-//     int available;
-// } Book;
-
-// typedef struct
-// {
-//     int member_id;
-//     char name[100];
-// } Member;
-
-// typedef struct
-// {
-//     int borrow_id;
-//     int book_id;
-//     int member_id;
-//     int returned;
-// } BorrowRecord;
-
-// typedef struct
-// {
-//     Book *books;
-//     int book_capacity;
-//     int book_count;
-//     int next_book_id;
-
-//     Member *members;
-//     int member_capacity;
-//     int member_count;
-//     int next_member_id;
-
-//     BorrowRecord *records;
-//     int record_capacity;
-//     int record_count;
-//     int next_record_id;
-// } Library;
-
 Book inputBook(Library *lib, bool is_update)
 {
 
@@ -149,7 +108,7 @@ void removeBook(Library *lib, int book_id)
 {
     int index = searchBook(lib, book_id);
 
-    for (int i = index; i < lib->book_count; i++)
+    for (int i = index; i < lib->book_count - 1; i++)
     {
         lib->books[i] = lib->books[i + 1];
     }

@@ -21,7 +21,7 @@ void memberMenu(Library *lib) // Ly Sievminh
     bool is_running = true;
     do
     {
-       printf("\n=================================\n");
+        printf("\n=================================\n");
         printf("       Member Management Menu\n");
         printf("=================================\n");
         printf("1. Add Member\n");
@@ -53,6 +53,4 @@ void memberMenu(Library *lib) // Ly Sievminh
             printf("Invalid choice! Please try again.\n");
         }
     } while (is_running);
-    
-
 }
