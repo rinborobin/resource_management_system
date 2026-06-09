@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
 #include "data.h"
 #include "library.h"
 
@@ -39,10 +40,52 @@ void initMockData(Library *lib)
     lib->next_record_id = 3003;
 }
 
+// bool createBook()
+// {
+//     FILE *file = fopen("./data/data.bin", "wb");
+
+//     if (file == NULL)
+//     {
+//         printf("Error opening file!\n");
+//         return 1;
+//     }
+//     fwrite(&lib.books, sizeof(Book), 1, file);
+
+//     fclose(file);
+//     printf("Struct successfully written to data.bin\n");
+//     return 0;
+// }
+
+// bool openBook()
+// {
+//     FILE *file = fopen("./data/data.bin", "rb");
+//     if (file == NULL)
+//     {
+//         printf("Error opening file!\n");
+//         return 1;
+//     }
+
+//     if (fread(&lib.books, sizeof(Book), 1, file) == 1)
+//     {
+//         printf("Data read successfully:\n");
+//         printf("ID: %d\n", lib.books[0].book_id);
+//         printf("Name: %s\n", lib.books[0].title);
+//     }
+//     else
+//     {
+//         printf("Error reading from file!\n");
+//     }
+
+//     fclose(file);
+//     return 0;
+// }
+
 int main()
 {
     initLibrary(&lib);
     initMockData(&lib);
+    createBook();
+    openBook();
     mainMenu(&lib);
     freeLibrary(&lib);
 
