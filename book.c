@@ -58,11 +58,16 @@ void addBook(Library *lib)
 
     Book book = inputBook(lib, false);
 
+    book.available = book.quantity;
+
     book.book_id = lib->next_book_id;
     lib->next_book_id++;
 
     lib->books[lib->book_count] = book;
     lib->book_count++;
+
+    printf("Available: %d\n", book.available);
+    printf("ID: %d\n", book.book_id);
 
     printf("Book added successfully!\n");
 }

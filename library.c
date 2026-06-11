@@ -1,8 +1,8 @@
 #include "library.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-#include <stdio.h>
 #include "library.h"
 #include "book.h"
 #include "member.h"
@@ -40,6 +40,60 @@ void initLibrary(Library *lib)
     lib->record_count = 0;
     lib->next_record_id = 3001;
 };
+bool saveLibrary(Library *lib)
+{
+    FILE *file = fopen("./data/data.bin", "wb");
+
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return 1;
+    }
+    fwrite(&lib->book_count, sizeof(int), 1, file);
+    fwrite(&lib->next_book_id, sizeof(int), 1, file);
+
+    fwrite(lib->books, sizeof(Book), lib->book_count, file);
+
+    fwrite(&lib->member_count, sizeof(int), 1, file);
+    fwrite(&lib->next_member_id, sizeof(int), 1, file);
+
+    fwrite(lib->members, sizeof(Member), lib->member_count, file);
+
+    fwrite(&lib->record_count, sizeof(int), 1, file);
+    fwrite(&lib->next_record_id, sizeof(int), 1, file);
+
+    fwrite(lib->records, sizeof(BorrowRecord), lib->record_count, file);
+
+    fclose(file);
+    printf("Struct successfully written to data.bin\n");
+    return 0;
+}
+
+bool loadLibrary(Library *lib)
+{
+    FILE *file = fopen("./data/data.bin", "rb");
+    if (file == NULL)
+    {
+        printf("Error opening file!\n");
+        return 1;
+    }
+
+    fread(&lib->book_count, sizeof(int), 1, file);
+    fread(&lib->next_book_id, sizeof(int), 1, file);
+    fread(lib->books, sizeof(Book), lib->book_count, file);
+
+    fread(&lib->member_count, sizeof(int), 1, file);
+    fread(&lib->next_member_id, sizeof(int), 1, file);
+    fread(lib->members, sizeof(Member), lib->member_count, file);
+
+    fread(&lib->record_count, sizeof(int), 1, file);
+    fread(&lib->next_record_id, sizeof(int), 1, file);
+    fread(lib->records, sizeof(BorrowRecord), lib->record_count, file);
+
+    fclose(file);
+    return 0;
+};
+
 void freeLibrary(Library *lib)
 {
     free(lib->books);
