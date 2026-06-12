@@ -2,8 +2,11 @@
 #define LIBRARY_H
 
 #include "data.h"
+#include <stdbool.h>
 
 void initLibrary(Library *lib);
+bool loadLibrary(Library *lib);
+bool saveLibrary(Library *lib);
 void freeLibrary(Library *lib);
 void mainMenu(Library *lib);
 void displaySummary(Library *lib);

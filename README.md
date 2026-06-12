@@ -17,3 +17,17 @@ After compiling
 ```bash
   ./<program_name>
 ```
+
+## with Makefile
+
+Compiling:
+
+```bash
+  make
+```
+
+Run:
+
+```bash
+  make run
+```

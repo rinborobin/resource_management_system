@@ -1,1 +1,19 @@
 *.exe
+
+# Compiled executables
+library
+*.out
+
+# Object files
+*.o
+*.obj
+
+# VS Code
+.vscode/
+
+# Binary data files
+data/*.bin
+
+# Temporary files
+*.tmp
+*.log
