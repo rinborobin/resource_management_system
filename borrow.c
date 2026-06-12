@@ -69,7 +69,7 @@ BorrowRecord inputBorrowRecord(Library *lib)
 
 void borrowBook(Library *lib, int member_id, int book_id)
 {
-    int book_index = searchBook(lib, book_id);
+    int book_index = searchBookByID(lib, book_id);
     int member_index = searchMember(lib, member_id);
 
     bool search_validation = book_index != -1 && member_index != -1;
@@ -101,7 +101,7 @@ void borrowBook(Library *lib, int member_id, int book_id)
 void returnBook(Library *lib, int book_id, int member_id)
 {
 
-    int book_index = searchBook(lib, book_id);
+    int book_index = searchBookByID(lib, book_id);
     int member_index = searchMember(lib, member_id);
 
     bool search_validation = book_index != -1 && member_index != -1;
