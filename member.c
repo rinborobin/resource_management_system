@@ -50,14 +50,12 @@
 
 // #endif
 
-Member inputMember(Library *lib, bool is_update)
+Member inputMember(bool is_update)
 {
     getchar();
     Member member;
 
     char name[100];
-
-    int member_id;
 
     printf("Enter your full name: ");
     fgets(name, sizeof(name), stdin);
@@ -87,7 +85,7 @@ void addMember(Library *lib)
         lib->member_capacity = new_capacity;
     }
 
-    Member member = inputMember(lib, false);
+    Member member = inputMember(false);
 
     member.member_id = lib->next_member_id;
     lib->next_member_id++;
