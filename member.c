@@ -50,12 +50,14 @@
 
 // #endif
 
-Member inputMember(bool is_update)
+Member inputMember(Library *lib, bool is_update)
 {
     getchar();
     Member member;
 
     char name[100];
+
+    int member_id;
 
     printf("Enter your full name: ");
     fgets(name, sizeof(name), stdin);
@@ -85,7 +87,7 @@ void addMember(Library *lib)
         lib->member_capacity = new_capacity;
     }
 
-    Member member = inputMember(false);
+    Member member = inputMember(lib, false);
 
     member.member_id = lib->next_member_id;
     lib->next_member_id++;
@@ -111,17 +113,56 @@ int searchMember(Library *lib, int member_id)
 }
 void viewMembers(Library *lib) // Ly Sievmiinh
 {
+    if (lib->member_count == 0)
+    {
+        printf("No members found.\n");
+        return;
+    }
+    for (int i = 0; i < lib->member_count; i++)
+    {
+        printf("ID: %d, Name: %s\n", lib->members[i].member_id, lib->members[i].name);
+    }
 }
 void updateMember(Library *lib)
 {
+    int member_id;
+    printf("Enter the member ID to update: \n");
+    scanf("%d", &member_id);
+
+    int index = searchMember(lib, member_id);
+    if (index == -1)
+    {
+        printf("Member not found.\n");
+        return;
+    }
+    Member updated = inputMember(lib, true);
+    updated.member_id = lib->members[index].member_id;
+    lib->members[index] = updated;
+    printf("Member updated successfully!\n");
 }
 void removeMember(Library *lib)
 {
+    int member_id;
+    printf("Enter the member ID to remove: \n");
+    scanf("%d", &member_id);
+
+    int index = searchMember(lib, member_id);
+    if (index == -1)
+    {
+        printf("Member not found.\n");
+        return;
+    }
+    for (int i = index; i < lib->member_count - 1; i++)
+    {
+        lib->members[i] = lib->members[i + 1];
+    }
+    lib->member_count--;
 }
 
 void memberMenu(Library *lib) // Ly Sievminh
 {
     int choice;
+    int member_id;
     bool is_running = true;
     do
     {
@@ -130,8 +171,10 @@ void memberMenu(Library *lib) // Ly Sievminh
         printf("=================================\n");
         printf("1. Add Member\n");
         printf("2. View Members\n");
-        printf("3. Update Member\n");
-        printf("4. Remove Member\n");
+        printf("3. search Member\n");
+        printf("4. Update Member\n");
+        printf("5. Remove Member\n");
+
         printf("0. Back to Main Menu\n");
         printf("Enter your choice: ");
         scanf(" %d", &choice);
@@ -144,9 +187,15 @@ void memberMenu(Library *lib) // Ly Sievminh
             viewMembers(lib);
             break;
         case 3:
-            updateMember(lib);
+
+            searchMember(lib, member_id);
             break;
         case 4:
+
+            updateMember(lib);
+            break;
+        case 5:
+
             removeMember(lib);
             break;
         case 0:
