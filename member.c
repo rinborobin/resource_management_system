@@ -187,18 +187,15 @@ void memberMenu(Library *lib) // Ly Sievminh
             viewMembers(lib);
             break;
         case 3:
-            printf("Enter the member ID to search: \n");
-            scanf("%d", &member_id);
+
             searchMember(lib, member_id);
             break;
         case 4:
-            printf("Enter the member ID to update: \n");
-            scanf("%d", &member_id);
+
             updateMember(lib);
             break;
         case 5:
-            printf("Enter the member ID to remove: \n");
-            scanf("%d", &member_id);
+
             removeMember(lib);
             break;
         case 0:
