@@ -1,18 +1,18 @@
 #include "book.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
 
-Book inputBook(Library *lib, bool is_update)
+Book inputBook(bool is_update)
 {
 
     getchar();
     Book book;
     char title[100],
         author[100];
-    int book_id,
-        quantity;
+    int quantity;
 
     printf("Enter the title of the book: ");
     fgets(title, sizeof(title), stdin);
@@ -36,6 +36,50 @@ Book inputBook(Library *lib, bool is_update)
     return book;
 }
 
+int searchBook(Library *lib, int book_id)
+{
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        if (lib->books[i].book_id == book_id)
+        {
+            return i;
+        }
+    }
+    printf("Book not found.\n");
+    return -1;
+}
+
+int compareChar(const char *s1, const char *s2)
+{
+    while (*s1 && *s2)
+    {
+        if (tolower((unsigned char)*s1) !=
+            tolower((unsigned char)*s2))
+        {
+            return 0;
+        }
+
+        s1++;
+        s2++;
+    }
+
+    return *s1 == *s2;
+}
+
+int checkDuplicateBook(Library *lib, char title[], char author[])
+{
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        if (compareChar(lib->books[i].title, title) &&
+            compareChar(lib->books[i].author, author))
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
 void addBook(Library *lib)
 {
     if (lib->book_count == lib->book_capacity)
@@ -56,7 +100,21 @@ void addBook(Library *lib)
         lib->book_capacity = new_capacity;
     }
 
-    Book book = inputBook(lib, false);
+    Book book = inputBook(false);
+
+    int idx = checkDuplicateBook(
+        lib,
+        book.title,
+        book.author);
+
+    if (idx != -1)
+    {
+        lib->books[idx].quantity += book.quantity;
+        lib->books[idx].available += book.quantity;
+
+        printf("Book already exists. Quantity updated.\n");
+        return;
+    }
 
     book.available = book.quantity;
 
@@ -83,24 +141,12 @@ void viewAllBooks(Library *lib)
         viewBooks(lib, i);
     }
 }
-int searchBook(Library *lib, int book_id)
-{
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        if (lib->books[i].book_id == book_id)
-        {
-            return i;
-        }
-    }
-    printf("Book not found.\n");
-    return -1;
-}
 
 void updateBook(Library *lib, int book_id)
 {
     int index = searchBook(lib, book_id);
 
-    Book book = inputBook(lib, true);
+    Book book = inputBook(true);
 
     book.book_id = lib->books[index].book_id;
     book.quantity = lib->books[index].quantity;
