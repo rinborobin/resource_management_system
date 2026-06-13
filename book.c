@@ -35,7 +35,9 @@ Book inputBook(Library *lib, bool is_update)
 
 void viewBooks(Library *lib, int index)
 {
-    printf("\nBook ID: %d\nBook Name: %s\nAuthor Name: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity, lib->books[index].available);
+    printf("\n---------------------------------------------------------\n");
+    printf("Book ID: %d\nBook Name: %s\nAuthor Name: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity, lib->books[index].available);
+    printf("---------------------------------------------------------\n");
 }
 void viewAllBooks(Library *lib)
 {
@@ -75,35 +77,65 @@ int searchBookByID(Library *lib, int book_id)
     return -1;
 }
 
-int searchByTitle(Library *lib, char title[])
+void toLowerString(char str[])
 {
-    for (int i = 0; i < lib->book_count; i++)
+    for (int i = 0; str[i] != '\0'; i++)
     {
-        if (compareChar(lib->books[i].title, title))
-        {
-            return i;
-            // viewAllBooks(lib, i);
-        }
+        str[i] = tolower((unsigned char)str[i]);
     }
-
-    return -1;
 }
 
-int searchByAuthor(Library *lib, char author[])
+void searchByTitle(Library *lib, char title[])
 {
-    bool found = false;
+    char book_title[100];
+    char search_title[100];
+
+    strcpy(search_title, title);
+
     for (int i = 0; i < lib->book_count; i++)
     {
-        if (compareChar(lib->books[i].author, author))
-        {
-            viewBooks(lib, i);
-            found = true;
-        }
-    }
+        strcpy(book_title, lib->books[i].title);
 
-    if (!found)
+        toLowerString(book_title);
+        toLowerString(search_title);
+        // printf("Inside Loop\n");
+
+        if (strstr(book_title, search_title) != NULL)
+        {
+            // printf("Matched\n");
+            viewBooks(lib, i);
+        }
+        // else
+        // {
+        //     printf("No match\n");
+        // }
+    }
+}
+
+void searchByAuthor(Library *lib, char author[])
+{
+    char book_author[100];
+    char search_author[100];
+
+    strcpy(search_author, author);
+
+    for (int i = 0; i < lib->book_count; i++)
     {
-        return -1;
+        strcpy(book_author, lib->books[i].author);
+
+        toLowerString(book_author);
+        toLowerString(search_author);
+        // printf("Inside Loop\n");
+
+        if (strstr(book_author, search_author) != NULL)
+        {
+            // printf("Matched\n");
+            viewBooks(lib, i);
+        }
+        // else
+        // {
+        //     printf("No match\n");
+        // }
     }
 }
 
@@ -220,9 +252,9 @@ void displayBookSummary(Library *lib)
     }
     int total_borrowed = total_copies - total_available;
 
-    printf("\n======================================================================\n");
-    printf("                          BOOK SUMMARY REPORT\n");
-    printf("======================================================================\n");
+    printf("\n====================================\n");
+    printf("           BOOK SUMMARY REPORT\n");
+    printf("====================================\n");
     printf("Total book titles: %d\n", total_titles);
     printf("Total book copies: %d\n", total_copies);
     printf("Total book available: %d\n", total_available);
@@ -293,21 +325,22 @@ void bookMenu(Library *lib)
 
                     printf("Enter Book Title: ");
                     fgets(title, sizeof(title), stdin);
-                    int title_idx = searchByTitle(lib, title);
-                    displaySearchResult(lib, title_idx);
+                    title[strcspn(title, "\n")] = '\0';
+                    searchByTitle(lib, title);
                     break;
                 case 3:
                     getchar();
 
                     printf("Enter Book Author: ");
                     fgets(author, sizeof(author), stdin);
-                    int author_idx = searchByAuthor(lib, author);
-                    displaySearchResult(lib, author_idx);
+                    author[strcspn(author, "\n")] = '\0';
+                    searchByAuthor(lib, author);
                     break;
                 case 0:
                     break;
                 default:
                     printf("Invalid choice!\n");
+                    break;
                 }
             } while (search_menu_choice != 0);
 
