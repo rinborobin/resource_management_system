@@ -141,7 +141,8 @@ void memberMenu(Library *lib) // Ly Sievminh
             viewMembers(lib);
             break;
         case 3:
-
+            printf("Enter the member ID: ");
+            scanf(" %d", &member_id);
             searchMember(lib, member_id);
             break;
         case 4:
