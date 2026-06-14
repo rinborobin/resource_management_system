@@ -3,53 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-// #ifndef DATA_H
-// #define DATA_H
-
-// typedef struct
-// {
-//     int book_id;
-//     char title[100];
-//     char author[100];
-//     int quantity;
-//     int available;
-// } Book;
-
-// typedef struct
-// {
-//     int member_id;
-//     char name[100];
-// } Member;
-
-// typedef struct
-// {
-//     int borrow_id;
-//     int book_id;
-//     int member_id;
-//     int returned;
-// } BorrowRecord;
-
-// typedef struct
-// {
-//     Book *books;
-//     int book_capacity;
-//     int book_count;
-//     int next_book_id;
-
-//     Member *members;
-//     int member_capacity;
-//     int member_count;
-//     int next_member_id;
-
-//     BorrowRecord *records;
-//     int record_capacity;
-//     int record_count;
-//     int next_record_id;
-// } Library;
-
-// #endif
-
+#include <ctype.h>
 Member inputMember(Library *lib, bool is_update)
 {
     getchar();
@@ -111,7 +65,40 @@ int searchMember(Library *lib, int member_id)
     printf("Member not found.\n");
     return -1;
 }
-void viewMembers(Library *lib) // Ly Sievmiinh
+void toLowerString(char str[])
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        str[i] = tolower((unsigned char)str[i]);
+    }
+}
+void viewMembers(Library *lib, int index) // Ly Sievminh
+{
+    printf("ID: %d, Name: %s\n", lib->members[index].member_id, lib->members[index].name);
+}
+void searchByName(Library *lib, char name[])
+{
+    char member_name[100];
+    char search_name[100];
+
+    strcpy(search_name, name);
+
+    for (int i = 0; i < lib->member_count; i++)
+    {
+        strcpy(member_name, lib->members[i].name);
+
+        toLowerString(member_name);
+        toLowerString(search_name);
+
+        if (strstr(member_name, search_name) != NULL)
+        {
+
+            viewMembers(lib, i);
+        }
+    }
+}
+
+void viewAllMembers(Library *lib)
 {
     if (lib->member_count == 0)
     {
@@ -184,11 +171,40 @@ void memberMenu(Library *lib) // Ly Sievminh
             addMember(lib);
             break;
         case 2:
-            viewMembers(lib);
+            viewAllMembers(lib);
             break;
         case 3:
+            int search_menu_choice;
+            char name[100];
 
-            searchMember(lib, member_id);
+            do
+            {
+                printf("\nSearch Member By:\n");
+                printf("1. ID\n");
+                printf("2. Name\n");
+                printf("0. Back\n");
+                printf("Enter your choice: ");
+                scanf(" %d", &search_menu_choice);
+                switch (search_menu_choice)
+                {
+                case 1:
+                    printf("Enter the member ID to search: ");
+                    scanf(" %d", &member_id);
+                    searchMember(lib, member_id);
+                    break;
+                case 2:
+                    printf("Enter the member name to search: ");
+                    fgets(name, sizeof(name), stdin);
+                    name[strcspn(name, "\n")] = '\0';
+                    searchByName(lib, name);
+                    break;
+                case 0:
+                    printf("Returning to Member Menu...\n");
+                    break;
+                default:
+                    printf("Invalid choice! Please try again.\n");
+                }
+            } while (search_menu_choice != 0);
             break;
         case 4:
 

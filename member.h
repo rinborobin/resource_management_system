@@ -5,7 +5,7 @@
 
 void memberMenu(Library *lib);
 void addMember(Library *lib);
-void viewMembers(Library *lib);
+void viewMembers(Library *lib, int index);
 void updateMember(Library *lib);
 void removeMember(Library *lib);
 int searchMember(Library *lib, int member_id);
