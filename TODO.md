@@ -40,31 +40,35 @@ Library Management System
 4. Return Book
 5. Reports
 6. Exit
+
    Book Management Module
    Features
-   Add Book
-   Enter book information
+
+   Add Book --
+   Enter book information --
    Validate required fields
-   Store book in system
-   Edit Book
-   Search book by ID
-   Modify information
-   Delete Book
-   Search book by ID
-   Confirm deletion
-   Search Book
+   Store book in system --
+   Edit Book --
+   Search book by ID --
+   Modify information --
+   Delete Book --
+   Search book by ID --
+   Confirm deletion --
+
+   Search Book --
    Search by:
-   Book ID
+   Book ID --
    Title
    Author
    ISBN
-   View All Books
-   Display complete book list
+   View All Books --
+   Display complete book list --
+
    Member Management Module
    Features
-   Add Member
-   Register new member
-   Edit Member
+
+   Add Member --
+   Edit Member --
    Modify member information
    Delete Member
    Remove member
@@ -74,22 +78,26 @@ Library Management System
    Name
    View All Members
    Display all members
+
    Borrow Book Module
    Features
-   Borrow Book
-   Select member
-   Select book
-   Verify availability
-   Create borrow record
-   Update book status
-   Validation
-   Member must exist
-   Book must exist
-   Book must be available
+
+   Borrow Book --
+   Select member --
+   Select book --
+   Verify availability --
+   Create borrow record --
+   Update book status --
+   Validation --
+   Member must exist --
+   Book must exist --
+   Book must be available --
+
    Return Book Module
    Features
-   Return Book
-   Locate borrowing record
+
+   Return Book --
+   Locate borrowing record --
    Record return date
    Update availability status
    Validation
@@ -99,11 +107,13 @@ Library Management System
 
 Display:
 
-Total Books
-Available Books
-Borrowed Books
-Total Members
+Total Books --
+Available Books --
+Borrowed Books --
+Total Members --
+
 Phase 3 - Data Persistence
+
 File Storage
 Books File
 
@@ -134,7 +144,9 @@ Deleting data
 Borrowing books
 Returning books
 Program exit
+
 Phase 4 - Testing
+
 Test Cases
 Book Management
 Add book
@@ -156,86 +168,20 @@ File Handling
 Save data
 Load data
 Data consistency
-Phase 5 - GUI Upgrade
 
-The GUI will be built after the CLI version is complete.
+VALIDATON CHECKLIST
 
-Main Window
+Add book
+Update non-existing book
+Remove non-existing book
 
-Display:
+Add member
+Remove member
 
-Total Books
-Available Books
-Borrowed Books
-Total Members
+Borrow unavailable book
+Borrow non-existing book
+Borrow with non-existing member
 
-Buttons:
+Return book twice
 
-Manage Books
-Manage Members
-Borrow Book
-Return Book
-Reports
-Exit
-Book Management Window
-
-Features:
-
-Add Book
-Edit Book
-Delete Book
-Search Book
-View Books
-Member Management Window
-
-Features:
-
-Add Member
-Edit Member
-Delete Member
-Search Member
-View Members
-Borrow Window
-
-Features:
-
-Select Member
-Select Book
-Borrow Book
-Return Window
-
-Features:
-
-Select Borrow Record
-Return Book
-Reports Window
-
-Display:
-
-Statistics
-Borrowing Summary
-Development Priority
-
-Priority 1:
-
-Data Structures
-Book Management
-Member Management
-
-Priority 2:
-
-Borrow Book
-Return Book
-
-Priority 3:
-
-File Handling
-Reports
-
-Priority 4:
-
-GUI Integration
-
-Priority 5:
-
-UI Improvements and Enhancements
+https://youtu.be/Q1kHG842HoI?si=iYFaXZfUHJ5lC1ko
