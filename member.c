@@ -69,7 +69,7 @@ Member inputMember(Library *lib, bool is_update)
 
 void addMember(Library *lib)
 {
-    if (lib->book_count == lib->member_capacity)
+    if (lib->member_count == lib->member_capacity)
     {
         int new_capacity = lib->member_capacity * 2;
 
