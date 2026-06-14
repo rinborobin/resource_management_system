@@ -65,13 +65,15 @@ int searchMember(Library *lib, int member_id)
     printf("Member not found.\n");
     return -1;
 }
-void toLowerString(char str[])
-{
-    for (int i = 0; str[i] != '\0'; i++)
-    {
-        str[i] = tolower((unsigned char)str[i]);
-    }
-}
+
+// void toLowerString(char str[])
+// {
+//     for (int i = 0; str[i] != '\0'; i++)
+//     {
+//         str[i] = tolower((unsigned char)str[i]);
+//     }
+// }
+
 void viewMembers(Library *lib, int index) // Ly Sievminh
 {
     printf("ID: %d, Name: %s\n", lib->members[index].member_id, lib->members[index].name);
