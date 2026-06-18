@@ -11,13 +11,27 @@ Book inputBook(Library *lib, bool is_update)
 {
     Book book;
     char title[100],
-        author[100];
+        author[100],
+        category[50];
     int quantity;
 
     printf("Enter the%s title of the book: ", is_update ? " new" : "");
     fgets(title, sizeof(title), stdin);
+    book.title[strcspn(
+        book.title,
+        "\n")] = '\0';
+
     printf("Enter the%s author name: ", is_update ? " new" : "");
     fgets(author, sizeof(author), stdin);
+    book.author[strcspn(
+        book.author,
+        "\n")] = '\0';
+
+    printf("Enter the%s category name: ", is_update ? " new" : "");
+    fgets(category, sizeof(category), stdin);
+    book.category[strcspn(
+        book.category,
+        "\n")] = '\0';
 
     if (!is_update)
     {
@@ -27,6 +41,7 @@ Book inputBook(Library *lib, bool is_update)
 
     strcpy(book.title, title);
     strcpy(book.author, author);
+    strcpy(book.category, category);
 
     return book;
 }
@@ -34,7 +49,7 @@ Book inputBook(Library *lib, bool is_update)
 void viewBooks(Library *lib, int index)
 {
     printf("\n---------------------------------------------------------\n");
-    printf("Book ID: %d\nBook Name: %s\nAuthor Name: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity, lib->books[index].available);
+    printf("Book ID: %d\nBook Name: %s\nAuthor Name: %s\nCategory: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].category, lib->books[index].quantity, lib->books[index].available);
     printf("---------------------------------------------------------\n");
 }
 void viewAllBooks(Library *lib)
