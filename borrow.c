@@ -1,5 +1,6 @@
 #include "borrow.h"
 #include "book.h"
+#include "library.h"
 #include "member.h"
 #include <stdio.h>
 
@@ -75,8 +76,22 @@ void returnBook(Library *lib, int book_id, int member_id)
     lib->books[book_index].available++;
 }
 
-void viewRecords(Library *lib) // Ly Sievminh
+void printRecord(Library *lib, int rec_id)
 {
+    printf("\nRecord ID: %d\nMember Name: %s\nBook Title: %s\nStatus: %s\n", rec_id, lib->members[rec_id].name, lib->books[rec_id].title, lib->records[rec_id].returned == 1 ? "Returned" : "Borrowed");
+}
+
+void viewRecords(Library *lib)
+{
+    if (lib->record_count == 0)
+    {
+        printItemNotFound("Record");
+        return;
+    }
+    for (int i = 0; i < lib->record_count; i++)
+    {
+        printRecord(lib, i);
+    }
 }
 void borrowMenu(Library *lib) // Ly Sievminh
 {

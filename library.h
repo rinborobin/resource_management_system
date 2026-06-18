@@ -4,6 +4,7 @@
 #include "data.h"
 #include <stdbool.h>
 
+void printItemNotFound(char *str);
 void initLibrary(Library *lib);
 bool loadLibrary(Library *lib);
 bool saveLibrary(Library *lib);

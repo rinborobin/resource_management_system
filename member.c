@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include "library.h"
 #include <stdio.h>
 #include <ctype.h>
 Member inputMember(Library *lib, bool is_update)
@@ -96,12 +97,12 @@ void viewAllMembers(Library *lib)
 {
     if (lib->member_count == 0)
     {
-        printf("No members found.\n");
+        printItemNotFound("Member");
         return;
     }
     for (int i = 0; i < lib->member_count; i++)
     {
-        printf("ID: %d, Name: %s\n", lib->members[i].member_id, lib->members[i].name);
+        viewMembers(lib, i);
     }
 }
 void updateMember(Library *lib)

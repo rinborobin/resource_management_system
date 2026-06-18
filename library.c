@@ -8,6 +8,11 @@
 #include "member.h"
 #include "borrow.h"
 
+void printItemNotFound(char *str)
+{
+    printf("%s Not Found.\n", str);
+}
+
 void initLibrary(Library *lib)
 {
     lib->book_capacity = 100;
@@ -83,8 +88,8 @@ bool loadLibrary(Library *lib)
     fread(&lib->next_book_id, sizeof(int), 1, file);
     fread(lib->books, sizeof(Book), lib->book_count, file);
 
-    printf("book_count=%d\n", lib->book_count);
-    printf("next_book_id=%d\n", lib->next_book_id);
+    // printf("book_count=%d\n", lib->book_count);
+    // printf("next_book_id=%d\n", lib->next_book_id);
 
     fread(&lib->member_count, sizeof(int), 1, file);
     fread(&lib->next_member_id, sizeof(int), 1, file);
@@ -104,12 +109,6 @@ void freeLibrary(Library *lib)
     free(lib->members);
     free(lib->records);
 };
-
-void bookMenu(Library *lib);   //
-void memberMenu(Library *lib); // Ly Sievminh
-void borrowMenu(Library *lib); //
-
-void displayBookSummary(Library *lib); // Ly Sievminh
 
 void summaryReport(Library *lib) // Ly Sievminh
 {

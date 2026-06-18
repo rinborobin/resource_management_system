@@ -1,4 +1,5 @@
 #include "book.h"
+#include "library.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
@@ -41,6 +42,11 @@ void viewBooks(Library *lib, int index)
 }
 void viewAllBooks(Library *lib)
 {
+    if (lib->book_count == 0)
+    {
+        printItemNotFound("Book");
+        return;
+    }
     for (int i = 0; i < lib->book_count; i++)
     {
         viewBooks(lib, i);
@@ -147,7 +153,7 @@ void displaySearchResult(Library *lib, int idx)
     }
     else
     {
-        printf("Book not found!\n");
+        printItemNotFound("Book");
     }
 }
 
@@ -340,7 +346,6 @@ void bookMenu(Library *lib)
                     break;
                 default:
                     printf("Invalid choice!\n");
-                    break;
                 }
             } while (search_menu_choice != 0);
 
