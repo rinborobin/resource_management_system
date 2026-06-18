@@ -169,6 +169,99 @@ void searchByAuthor(Library *lib, char *author)
         // }
     }
 }
+
+void viewBooksSortedByTitle(Library *lib)
+{
+
+    if (lib->book_count == 0)
+    {
+        printItemNotFound("Book");
+        return;
+    }
+
+    int *indices = malloc(
+        lib->book_count * sizeof(int));
+
+    if (indices == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        indices[i] = i;
+    }
+
+    for (int i = 0; i < lib->book_count - 1; i++)
+    {
+        for (int j = 0; j < lib->book_count - i - 1; j++)
+        {
+            if (strcmp(
+                    lib->books[indices[j]].title,
+                    lib->books[indices[j + 1]].title) > 0)
+            {
+                int temp = indices[j];
+                indices[j] = indices[j + 1];
+                indices[j + 1] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        viewBooks(lib, indices[i]);
+    }
+
+    free(indices);
+}
+
+void viewBooksSortedByAuthor(Library *lib)
+{
+
+    if (lib->book_count == 0)
+    {
+        printItemNotFound("Book");
+        return;
+    }
+
+    int *indices = malloc(
+        lib->book_count * sizeof(int));
+
+    if (indices == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        indices[i] = i;
+    }
+
+    for (int i = 0; i < lib->book_count - 1; i++)
+    {
+        for (int j = 0; j < lib->book_count - i - 1; j++)
+        {
+            if (strcmp(
+                    lib->books[indices[j]].author,
+                    lib->books[indices[j + 1]].author) > 0)
+            {
+                int temp = indices[j];
+                indices[j] = indices[j + 1];
+                indices[j + 1] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        viewBooks(lib, indices[i]);
+    }
+
+    free(indices);
+}
+
 void displayUniqueCat(Library *lib)
 {
     for (int i = 0; i < lib->book_count; i++)
@@ -349,7 +442,35 @@ void bookMenu(Library *lib)
             break;
 
         case 2:
+            int view_book_choice = 0;
             viewAllBooks(lib);
+            do
+            {
+                printf("======================\n");
+                printf("1. Sort by Book Title\n");
+                printf("2. Sort by Book Author\n");
+
+                printf("0. Exit\n");
+                printf("======================\n");
+
+                view_book_choice = getIntInput("Enter choice: ");
+
+                switch (view_book_choice)
+                {
+                case 1:
+                    printf("\n=========Sorted by Title=========\n");
+                    viewBooksSortedByTitle(lib);
+                    break;
+                case 2:
+                    printf("\n=========Sorted by Author=========\n");
+                    viewBooksSortedByAuthor(lib);
+                case 0:
+                    break;
+                default:
+                    printf("Invalid choice!\n");
+                }
+            } while (view_book_choice != 0);
+
             break;
 
         case 3:
