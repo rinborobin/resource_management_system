@@ -23,7 +23,7 @@ After compiling
 Compiling:
 
 ```bash
-  make
+  make all
 ```
 
 Run:
