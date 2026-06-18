@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include "library.h"
+#include "utils.h"
 #include <stdio.h>
 #include <ctype.h>
 Member inputMember(Library *lib, bool is_update)
@@ -62,8 +62,6 @@ int searchMember(Library *lib, int member_id)
             return i;
         }
     }
-
-    printf("Member not found.\n");
     return -1;
 }
 
@@ -108,8 +106,7 @@ void viewAllMembers(Library *lib)
 void updateMember(Library *lib)
 {
     int member_id;
-    printf("Enter the member ID to update: \n");
-    scanf("%d", &member_id);
+    member_id = getIntInput("Enter Member ID to Update: ");
 
     int index = searchMember(lib, member_id);
     if (index == -1)
@@ -125,8 +122,7 @@ void updateMember(Library *lib)
 void removeMember(Library *lib)
 {
     int member_id;
-    printf("Enter the member ID to remove: \n");
-    scanf("%d", &member_id);
+    member_id = getIntInput("Enter Member ID to Remove: ");
 
     int index = searchMember(lib, member_id);
     if (index == -1)
@@ -158,8 +154,7 @@ void memberMenu(Library *lib) // Ly Sievminh
         printf("5. Remove Member\n");
 
         printf("0. Back to Main Menu\n");
-        printf("Enter your choice: ");
-        scanf(" %d", &choice);
+        choice = getIntInput("Enter Choice: ");
         switch (choice)
         {
         case 1:
@@ -178,13 +173,11 @@ void memberMenu(Library *lib) // Ly Sievminh
                 printf("1. ID\n");
                 printf("2. Name\n");
                 printf("0. Back\n");
-                printf("Enter your choice: ");
-                scanf(" %d", &search_menu_choice);
+                search_menu_choice = getIntInput("Enter Choice: ");
                 switch (search_menu_choice)
                 {
                 case 1:
-                    printf("Enter the member ID to search: ");
-                    scanf(" %d", &member_id);
+                    member_id = getIntInput("Enter Member ID to Search: ");
                     searchMember(lib, member_id);
                     break;
                 case 2:

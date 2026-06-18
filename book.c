@@ -3,13 +3,12 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include "utils.h"
 #include <stdlib.h>
 #include <string.h>
 
 Book inputBook(Library *lib, bool is_update)
 {
-
-    getchar();
     Book book;
     char title[100],
         author[100];
@@ -22,9 +21,7 @@ Book inputBook(Library *lib, bool is_update)
 
     if (!is_update)
     {
-        printf("Enter the quantity of book: ");
-        scanf(" %d", &quantity);
-        getchar();
+        quantity = getIntInput("Enter quantity of the book: ");
         book.quantity = quantity;
     }
 
@@ -285,8 +282,7 @@ void bookMenu(Library *lib)
         printf("6. Book Summary\n");
         printf("0. Back\n");
         printf("=================================\n");
-        printf("Enter choice: ");
-        scanf(" %d", &choice);
+        choice = getIntInput("Enter choice: ");
 
         switch (choice)
         {
@@ -315,28 +311,22 @@ void bookMenu(Library *lib)
                 printf("3. Search by Author\n");
                 printf("0. Back\n");
 
-                printf("Enter choice: ");
-                scanf(" %d", &search_menu_choice);
+                search_menu_choice = getIntInput("Enter choice: ");
 
                 switch (search_menu_choice)
                 {
                 case 1:
-                    printf("Enter Book ID: ");
-                    scanf(" %d", &book_id);
+                    book_id = getIntInput("Enter Book ID: ");
                     int id_idx = searchBookByID(lib, book_id);
                     displaySearchResult(lib, id_idx);
                     break;
                 case 2:
-                    getchar();
-
                     printf("Enter Book Title: ");
                     fgets(title, sizeof(title), stdin);
                     title[strcspn(title, "\n")] = '\0';
                     searchByTitle(lib, title);
                     break;
                 case 3:
-                    getchar();
-
                     printf("Enter Book Author: ");
                     fgets(author, sizeof(author), stdin);
                     author[strcspn(author, "\n")] = '\0';
@@ -352,14 +342,12 @@ void bookMenu(Library *lib)
             break;
 
         case 4:
-            printf("Enter Book ID: ");
-            scanf(" %d", &book_id);
+            book_id = getIntInput("Enter Book ID: ");
             updateBook(lib, book_id);
             break;
 
         case 5:
-            printf("Enter Book ID: ");
-            scanf(" %d", &book_id);
+            book_id = getIntInput("Enter Book ID: ");
             removeBook(lib, book_id);
             break;
 

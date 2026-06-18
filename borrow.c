@@ -1,20 +1,18 @@
 #include "borrow.h"
 #include "book.h"
 #include "library.h"
+#include "utils.h"
 #include "member.h"
 #include <stdio.h>
 
 BorrowRecord inputBorrowRecord(Library *lib)
 {
-    getchar();
     BorrowRecord b_record;
     int book_id, member_id;
     int returned = 0;
 
-    printf("Enter the book ID: ");
-    scanf(" %d", &book_id);
-    printf("Enter the member ID: ");
-    scanf(" %d", &member_id);
+    book_id = getIntInput("Enter Book ID: ");
+    member_id = getIntInput("Enter Member ID: ");
 
     b_record.book_id = book_id;
     b_record.member_id = member_id;
@@ -106,22 +104,17 @@ void borrowMenu(Library *lib) // Ly Sievminh
         printf("3. View Records\n");
         printf("0. Back\n");
         printf("=================================\n");
-        printf("Enter choice: ");
-        scanf(" %d", &choice);
+        choice = getIntInput("Enter Choice: ");
         switch (choice)
         {
         case 1:
-            printf("Enter the book ID: ");
-            scanf(" %d", &book_id);
-            printf("Enter the member ID: ");
-            scanf(" %d", &member_id);
+            book_id = getIntInput("Enter Book ID: ");
+            member_id = getIntInput("Enter Member ID: ");
             borrowBook(lib, member_id, book_id);
             break;
         case 2:
-            printf("Enter the book ID: ");
-            scanf(" %d", &book_id);
-            printf("Enter the member ID: ");
-            scanf(" %d", &member_id);
+            book_id = getIntInput("Enter Book ID: ");
+            member_id = getIntInput("Enter Member ID: ");
             returnBook(lib, book_id, member_id);
             break;
         case 3:

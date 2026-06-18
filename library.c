@@ -1,17 +1,12 @@
-#include "library.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "utils.h"
 #include "library.h"
 #include "book.h"
 #include "member.h"
 #include "borrow.h"
-
-void printItemNotFound(char *str)
-{
-    printf("%s Not Found.\n", str);
-}
 
 void initLibrary(Library *lib)
 {
@@ -175,8 +170,7 @@ void mainMenu(Library *lib)
         printf("4. Summary Report\n");
         printf("0. Exit\n");
         printf("=================================\n");
-        printf("Enter choice: ");
-        scanf(" %d", &choice);
+        choice = getIntInput("Enter choice: ");
 
         switch (choice)
         {
