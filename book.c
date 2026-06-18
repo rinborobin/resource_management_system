@@ -80,14 +80,6 @@ int searchBookByID(Library *lib, int book_id)
     return -1;
 }
 
-void toLowerString(char str[])
-{
-    for (int i = 0; str[i] != '\0'; i++)
-    {
-        str[i] = tolower((unsigned char)str[i]);
-    }
-}
-
 void searchByTitle(Library *lib, char title[])
 {
     char book_title[100];
