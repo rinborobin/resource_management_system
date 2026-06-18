@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <ctype.h>
 #include "utils.h"
 
 int getIntInput(const char *prompt)
