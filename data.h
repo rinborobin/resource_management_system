@@ -6,6 +6,7 @@ typedef struct
     int book_id;
     char title[100];
     char author[100];
+    char category[50];
     int quantity;
     int available;
 } Book;

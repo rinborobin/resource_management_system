@@ -11,13 +11,27 @@ Book inputBook(Library *lib, bool is_update)
 {
     Book book;
     char title[100],
-        author[100];
+        author[100],
+        category[50];
     int quantity;
 
     printf("Enter the%s title of the book: ", is_update ? " new" : "");
     fgets(title, sizeof(title), stdin);
+    book.title[strcspn(
+        book.title,
+        "\n")] = '\0';
+
     printf("Enter the%s author name: ", is_update ? " new" : "");
     fgets(author, sizeof(author), stdin);
+    book.author[strcspn(
+        book.author,
+        "\n")] = '\0';
+
+    printf("Enter the%s category name: ", is_update ? " new" : "");
+    fgets(category, sizeof(category), stdin);
+    book.category[strcspn(
+        book.category,
+        "\n")] = '\0';
 
     if (!is_update)
     {
@@ -27,6 +41,7 @@ Book inputBook(Library *lib, bool is_update)
 
     strcpy(book.title, title);
     strcpy(book.author, author);
+    strcpy(book.category, category);
 
     return book;
 }
@@ -34,7 +49,7 @@ Book inputBook(Library *lib, bool is_update)
 void viewBooks(Library *lib, int index)
 {
     printf("\n---------------------------------------------------------\n");
-    printf("Book ID: %d\nBook Name: %s\nAuthor Name: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].quantity, lib->books[index].available);
+    printf("Book ID: %d\nBook Name: %s\nAuthor Name: %s\nCategory: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].category, lib->books[index].quantity, lib->books[index].available);
     printf("---------------------------------------------------------\n");
 }
 void viewAllBooks(Library *lib)
@@ -80,7 +95,7 @@ int searchBookByID(Library *lib, int book_id)
     return -1;
 }
 
-void searchByTitle(Library *lib, char title[])
+void searchByTitle(Library *lib, char *title)
 {
     char book_title[100];
     char search_title[100];
@@ -107,7 +122,28 @@ void searchByTitle(Library *lib, char title[])
     }
 }
 
-void searchByAuthor(Library *lib, char author[])
+void searchByCategory(Library *lib, char *category)
+{
+    char book_category[50];
+    char search_category[50];
+
+    strcpy(search_category, category);
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        strcpy(book_category, lib->books[i].category);
+
+        toLowerString(book_category);
+        toLowerString(search_category);
+
+        if (strstr(book_category, search_category) != NULL)
+        {
+            viewBooks(lib, i);
+        }
+    }
+}
+
+void searchByAuthor(Library *lib, char *author)
 {
     char book_author[100];
     char search_author[100];
@@ -133,6 +169,36 @@ void searchByAuthor(Library *lib, char author[])
         // }
     }
 }
+void displayUniqueCat(Library *lib)
+{
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        int found = 0;
+
+        for (int j = 0; j < i; j++)
+        {
+            char cat1[100];
+            char cat2[100];
+
+            strcpy(cat1, lib->books[i].category);
+            strcpy(cat2, lib->books[j].category);
+
+            toLowerString(cat1);
+            toLowerString(cat2);
+
+            if (strcmp(cat1, cat2) == 0)
+            {
+                found = 1;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            printf("\n%s", lib->books[i].category);
+        }
+    }
+}
 
 void displaySearchResult(Library *lib, int idx)
 {
@@ -146,7 +212,7 @@ void displaySearchResult(Library *lib, int idx)
     }
 }
 
-int checkDuplicateBook(Library *lib, char title[], char author[])
+int checkDuplicateBook(Library *lib, char *title, char *author)
 {
     for (int i = 0; i < lib->book_count; i++)
     {
@@ -292,6 +358,7 @@ void bookMenu(Library *lib)
 
             char title[100];
             char author[100];
+            char category[50];
 
             do
             {
@@ -301,6 +368,7 @@ void bookMenu(Library *lib)
                 printf("1. Search by ID\n");
                 printf("2. Search by Title\n");
                 printf("3. Search by Author\n");
+                printf("4. Search by Category\n");
                 printf("0. Back\n");
 
                 search_menu_choice = getIntInput("Enter choice: ");
@@ -323,6 +391,19 @@ void bookMenu(Library *lib)
                     fgets(author, sizeof(author), stdin);
                     author[strcspn(author, "\n")] = '\0';
                     searchByAuthor(lib, author);
+                    break;
+                case 4:
+                    printf("\n==================\n");
+                    printf("Categories:\n");
+                    printf("-------------");
+                    displayUniqueCat(lib);
+                    printf("==================\n");
+                    printf("\n----------------------------------\n");
+                    printf("Enter Book Category: ");
+                    fgets(category, sizeof(category), stdin);
+                    category[strcspn(category, "\n")] = '\0';
+                    searchByCategory(lib, category);
+
                     break;
                 case 0:
                     break;
