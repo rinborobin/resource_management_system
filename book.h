@@ -4,7 +4,7 @@
 #include "data.h"
 #include <stdbool.h>
 
-Book inputBook(Library *lib, bool is_update);
+Book inputBook(bool is_update);
 void bookMenu(Library *lib);
 void addBook(Library *lib);
 int searchBookByID(Library *lib, int book_id);
