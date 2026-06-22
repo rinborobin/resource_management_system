@@ -1,13 +1,24 @@
-#include "book.h"
-#include "library.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <ctype.h>
-#include "utils.h"
 #include <stdlib.h>
 #include <string.h>
 
-Book inputBook(Library *lib, bool is_update)
+#include "book.h"
+#include "library.h"
+#include "utils.h"
+
+bool getInput(char *prompt, char *buffer, int size)
+{
+    printf("%s", prompt);
+
+    fgets(buffer, size, stdin);
+    buffer[strcspn(buffer, "\n")] = '\0';
+
+    return strcmp(buffer, "cancel") != 0;
+}
+
+Book inputBook(bool is_update)
 {
     Book book;
     char title[100],
@@ -15,27 +26,46 @@ Book inputBook(Library *lib, bool is_update)
         category[50];
     int quantity;
 
-    printf("Enter the%s title of the book: ", is_update ? " new" : "");
-    fgets(title, sizeof(title), stdin);
-    book.title[strcspn(
-        book.title,
-        "\n")] = '\0';
+    printf("\n");
+    printf(
+        "\n"
+        "╔══════════════════════════════════════╗\n"
+        "║               ADD BOOK               ║\n"
+        "╚══════════════════════════════════════╝\n");
+    printf("\n");
 
-    printf("Enter the%s author name: ", is_update ? " new" : "");
-    fgets(author, sizeof(author), stdin);
-    book.author[strcspn(
-        book.author,
-        "\n")] = '\0';
+    printf("\n(Type 'cancel' at any time to return)\n");
 
-    printf("Enter the%s category name: ", is_update ? " new" : "");
-    fgets(category, sizeof(category), stdin);
-    book.category[strcspn(
-        book.category,
-        "\n")] = '\0';
+    if (!getInput(
+            is_update ? "New Title    : " : "Title        : ",
+            title,
+            sizeof(title)))
+    {
+        book.book_id = -1;
+        return book;
+    }
+
+    if (!getInput(
+            is_update ? "New Author   : " : "Author       : ",
+            author,
+            sizeof(author)))
+    {
+        book.book_id = -1;
+        return book;
+    }
+
+    if (!getInput(
+            is_update ? "New Category : " : "Category     : ",
+            category,
+            sizeof(category)))
+    {
+        book.book_id = -1;
+        return book;
+    }
 
     if (!is_update)
     {
-        quantity = getIntInput("Enter quantity of the book: ");
+        quantity = getIntInput("Quantity  : ");
         book.quantity = quantity;
     }
 
@@ -48,9 +78,22 @@ Book inputBook(Library *lib, bool is_update)
 
 void viewBooks(Library *lib, int index)
 {
-    printf("\n---------------------------------------------------------\n");
-    printf("Book ID: %d\nBook Name: %s\nAuthor Name: %s\nCategory: %s\nQuantity: %d\nAvailable: %d\n", lib->books[index].book_id, lib->books[index].title, lib->books[index].author, lib->books[index].category, lib->books[index].quantity, lib->books[index].available);
-    printf("---------------------------------------------------------\n");
+    Book *book = &lib->books[index];
+
+    book->title[strcspn(book->title, "\n")] = '\0';
+    book->author[strcspn(book->author, "\n")] = '\0';
+    book->category[strcspn(book->category, "\n")] = '\0';
+
+    printf("┌──────────────────────────────────────────────────┐\n");
+
+    printf("  Book ID   : %d\n", book->book_id);
+    printf("  Title     : %s\n", book->title);
+    printf("  Author    : %s\n", book->author);
+    printf("  Category  : %s\n", book->category);
+    printf("  Quantity  : %d\n", book->quantity);
+    printf("  Available : %d\n", book->available);
+
+    printf("└──────────────────────────────────────────────────┘\n");
 }
 void viewAllBooks(Library *lib)
 {
@@ -108,17 +151,11 @@ void searchByTitle(Library *lib, char *title)
 
         toLowerString(book_title);
         toLowerString(search_title);
-        // printf("Inside Loop\n");
 
         if (strstr(book_title, search_title) != NULL)
         {
-            // printf("Matched\n");
             viewBooks(lib, i);
         }
-        // else
-        // {
-        //     printf("No match\n");
-        // }
     }
 }
 
@@ -288,7 +325,7 @@ void displayUniqueCat(Library *lib)
 
         if (!found)
         {
-            printf("\n%s", lib->books[i].category);
+            printf("  %s", lib->books[i].category);
         }
     }
 }
@@ -321,6 +358,7 @@ int checkDuplicateBook(Library *lib, char *title, char *author)
 
 void addBook(Library *lib)
 {
+
     if (lib->book_count == lib->book_capacity)
     {
         int new_capacity = lib->book_capacity * 2;
@@ -339,7 +377,10 @@ void addBook(Library *lib)
         lib->book_capacity = new_capacity;
     }
 
-    Book book = inputBook(lib, false);
+    Book book = inputBook(false);
+
+    if (book.book_id == -1)
+        return;
 
     int idx = checkDuplicateBook(
         lib,
@@ -363,17 +404,28 @@ void addBook(Library *lib)
     lib->books[lib->book_count] = book;
     lib->book_count++;
 
-    printf("Available: %d\n", book.available);
-    printf("ID: %d\n", book.book_id);
-
-    printf("Book added successfully!\n");
+    printf(
+        "\n"
+        "╔══════════════════════════════════════╗\n"
+        "║        BOOK ADDED SUCCESSFULLY       ║\n"
+        "╚══════════════════════════════════════╝\n"
+        " ID       : %d\n"
+        " Title    : %s\n"
+        " Author   : %s\n"
+        " Category : %s\n"
+        " Quantity : %d\n",
+        book.book_id,
+        book.title,
+        book.author,
+        book.category,
+        book.quantity);
 }
 
 void updateBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
 
-    Book book = inputBook(lib, true);
+    Book book = inputBook(true);
 
     book.book_id = lib->books[index].book_id;
     book.quantity = lib->books[index].quantity;
@@ -406,33 +458,44 @@ void displayBookSummary(Library *lib)
     }
     int total_borrowed = total_copies - total_available;
 
-    printf("\n====================================\n");
-    printf("           BOOK SUMMARY REPORT\n");
-    printf("====================================\n");
-    printf("Total book titles: %d\n", total_titles);
-    printf("Total book copies: %d\n", total_copies);
-    printf("Total book available: %d\n", total_available);
-    printf("Total book borrowed: %d\n", total_borrowed);
+    printf(
+        "\n"
+        "╔══════════════════════════════════════╗\n"
+        "║         BOOK SUMMARY REPORT          ║\n"
+        "╠══════════════════════════════════════╣\n"
+        "║ %-22s : %-11d ║\n"
+        "║ %-22s : %-11d ║\n"
+        "║ %-22s : %-11d ║\n"
+        "║ %-22s : %-11d ║\n"
+        "╚══════════════════════════════════════╝\n",
+        "Total Book Titles", total_titles,
+        "Total Book Copies", total_copies,
+        "Total Available", total_available,
+        "Total Borrowed", total_borrowed);
 
 }; // Ly Sievminh
 void bookMenu(Library *lib)
 {
     int choice;
     int book_id;
-    char user_input[100];
+
     do
     {
-        printf("\n=================================\n");
-        printf("       BOOK MANAGEMENT\n");
-        printf("=================================\n");
-        printf("1. Add Book\n");
-        printf("2. View All Books\n");
-        printf("3. Search Book\n");
-        printf("4. Update Book\n");
-        printf("5. Remove Book\n");
-        printf("6. Book Summary\n");
-        printf("0. Back\n");
-        printf("=================================\n");
+        printf("\n");
+
+        printf(
+            "╔══════════════════════════════════════╗\n"
+            "║            BOOK MANAGEMENT           ║\n"
+            "╠══════════════════════════════════════╣\n"
+            "║ 1. Add Book                          ║\n"
+            "║ 2. View All Books                    ║\n"
+            "║ 3. Search Book                       ║\n"
+            "║ 4. Update Book                       ║\n"
+            "║ 5. Remove Book                       ║\n"
+            "║ 6. Book Summary                      ║\n"
+            "║ 0. Back                              ║\n"
+            "╚══════════════════════════════════════╝\n");
+        printf("\n");
         choice = getIntInput("Enter choice: ");
 
         switch (choice)
@@ -446,23 +509,29 @@ void bookMenu(Library *lib)
             viewAllBooks(lib);
             do
             {
-                printf("======================\n");
-                printf("1. Sort by Book Title\n");
-                printf("2. Sort by Book Author\n");
-
-                printf("0. Exit\n");
-                printf("======================\n");
+                printf(
+                    "╔══════════════════════════════════════╗\n"
+                    "║               Sort Book              ║\n"
+                    "╠══════════════════════════════════════╣\n"
+                    "║ 1. Sort by Book Title                ║\n"
+                    "║ 2. Sort by Book Author               ║\n"
+                    "║ 0. Exit                              ║\n"
+                    "╚══════════════════════════════════════╝\n");
 
                 view_book_choice = getIntInput("Enter choice: ");
 
                 switch (view_book_choice)
                 {
                 case 1:
-                    printf("\n=========Sorted by Title=========\n");
+                    printf("┌──────────────────────────────────────────────────┐\n");
+                    printf("│                  Sorted by Title                 │\n");
+                    printf("└──────────────────────────────────────────────────┘\n");
                     viewBooksSortedByTitle(lib);
                     break;
                 case 2:
-                    printf("\n=========Sorted by Author=========\n");
+                    printf("┌──────────────────────────────────────────────────┐\n");
+                    printf("│                  Sorted by Author                │\n");
+                    printf("└──────────────────────────────────────────────────┘\n");
                     viewBooksSortedByAuthor(lib);
                 case 0:
                     break;
@@ -483,43 +552,61 @@ void bookMenu(Library *lib)
 
             do
             {
-                printf("\n=================================\n");
-                printf("       SEARCH BOOK MENU\n");
-                printf("=================================\n");
-                printf("1. Search by ID\n");
-                printf("2. Search by Title\n");
-                printf("3. Search by Author\n");
-                printf("4. Search by Category\n");
-                printf("0. Back\n");
+                printf(
+                    "╔══════════════════════════════════════╗\n"
+                    "║           SEARCH BOOK MENU           ║\n"
+                    "╠══════════════════════════════════════╣\n"
+                    "║ 1. Search by ID                      ║\n"
+                    "║ 2. Search by Title                   ║\n"
+                    "║ 3. Search by Author                  ║\n"
+                    "║ 4. Search by Category                ║\n"
+                    "║ 0. Back                              ║\n"
+                    "╚══════════════════════════════════════╝\n");
+                printf("\n");
 
                 search_menu_choice = getIntInput("Enter choice: ");
 
                 switch (search_menu_choice)
                 {
                 case 1:
-                    book_id = getIntInput("Enter Book ID: ");
+                    book_id = getIntInput("┌───────────────────────────────┐\n"
+                                          "│         Search by ID          │\n"
+                                          "└───────────────────────────────┘\n"
+                                          " ID: ");
                     int id_idx = searchBookByID(lib, book_id);
                     displaySearchResult(lib, id_idx);
                     break;
                 case 2:
-                    printf("Enter Book Title: ");
+                    printf("┌───────────────────────────────┐\n"
+                           "│        Search by Title        │\n"
+                           "└───────────────────────────────┘\n"
+                           " Title: ");
                     fgets(title, sizeof(title), stdin);
                     title[strcspn(title, "\n")] = '\0';
                     searchByTitle(lib, title);
                     break;
                 case 3:
-                    printf("Enter Book Author: ");
+                    printf("┌───────────────────────────────┐\n"
+                           "│       Search by Author        │\n"
+                           "└───────────────────────────────┘\n"
+                           " Author: ");
                     fgets(author, sizeof(author), stdin);
                     author[strcspn(author, "\n")] = '\0';
                     searchByAuthor(lib, author);
                     break;
                 case 4:
-                    printf("\n==================\n");
-                    printf("Categories:\n");
-                    printf("-------------");
+                    printf(
+                        "\n"
+                        "┌───────────────────────────────┐\n"
+                        "│       Search by Author        │\n"
+                        "└───────────────────────────────┘\n");
+
+                    printf("┌───────────────────────────────┐\n");
+
                     displayUniqueCat(lib);
-                    printf("==================\n");
-                    printf("\n----------------------------------\n");
+
+                    printf("└───────────────────────────────┘\n");
+
                     printf("Enter Book Category: ");
                     fgets(category, sizeof(category), stdin);
                     category[strcspn(category, "\n")] = '\0';
@@ -536,12 +623,18 @@ void bookMenu(Library *lib)
             break;
 
         case 4:
-            book_id = getIntInput("Enter Book ID: ");
+            book_id = getIntInput("┌───────────────────────────────┐\n"
+                                  "│         Enter Book ID         │\n"
+                                  "└───────────────────────────────┘\n"
+                                  "  ID: ");
             updateBook(lib, book_id);
             break;
 
         case 5:
-            book_id = getIntInput("Enter Book ID: ");
+            book_id = getIntInput("┌───────────────────────────────┐\n"
+                                  "│         Enter Book ID         │\n"
+                                  "└───────────────────────────────┘\n"
+                                  "  ID: ");
             removeBook(lib, book_id);
             break;
 

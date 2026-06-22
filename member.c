@@ -5,17 +5,18 @@
 #include "utils.h"
 #include <stdio.h>
 #include <ctype.h>
-Member inputMember(Library *lib, bool is_update)
+Member inputMember(bool is_update)
 {
     getchar();
     Member member;
 
     char name[100];
 
-    int member_id;
-
-    printf("Enter your full name: ");
+    printf("Enter the%s name: ", is_update ? " new" : "");
     fgets(name, sizeof(name), stdin);
+    member.name[strcspn(
+        member.name,
+        "\n")] = '\0';
 
     strcpy(member.name, name);
 
@@ -42,7 +43,7 @@ void addMember(Library *lib)
         lib->member_capacity = new_capacity;
     }
 
-    Member member = inputMember(lib, false);
+    Member member = inputMember(false);
 
     member.member_id = lib->next_member_id;
     lib->next_member_id++;
@@ -114,7 +115,7 @@ void updateMember(Library *lib)
         printf("Member not found.\n");
         return;
     }
-    Member updated = inputMember(lib, true);
+    Member updated = inputMember(true);
     updated.member_id = lib->members[index].member_id;
     lib->members[index] = updated;
     printf("Member updated successfully!\n");

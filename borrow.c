@@ -5,11 +5,10 @@
 #include "member.h"
 #include <stdio.h>
 
-BorrowRecord inputBorrowRecord(Library *lib)
+BorrowRecord inputBorrowRecord()
 {
     BorrowRecord b_record;
     int book_id, member_id;
-    int returned = 0;
 
     book_id = getIntInput("Enter Book ID: ");
     member_id = getIntInput("Enter Member ID: ");
