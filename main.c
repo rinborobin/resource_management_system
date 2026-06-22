@@ -5,6 +5,7 @@
 
 #include "data.h"
 #include "book.h"
+#include "utils.h"
 #include "library.h"
 
 Library lib = {0};
@@ -50,7 +51,26 @@ int main()
 
     mainMenu(&lib);
 
-    saveLibrary(&lib);
+    printf("\n");
+    printf("┌──── Confirm & Exit ──────┐\n");
+    printf("├──────────────────────────┤\n");
+    printf("| 1. Save & Exit           |\n");
+    printf("├──────────────────────────┤\n");
+    printf("| 0. Exit Without Saving   |\n");
+    printf("└──────────────────────────┘\n");
+
+    int choice = getIntInput("Enter your choice: ");
+
+    if (choice == 1)
+    {
+        saveLibrary(&lib);
+    }
+    else if (choice == 0)
+    {
+        printf("┌─────────────────────────┐\n");
+        printf("|  Exited Without Saving  |\n");
+        printf("└─────────────────────────┘\n");
+    }
 
     freeLibrary(&lib);
 

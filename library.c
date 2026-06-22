@@ -66,7 +66,7 @@ bool saveLibrary(Library *lib)
     fwrite(lib->records, sizeof(BorrowRecord), lib->record_count, file);
 
     fclose(file);
-    printf("Struct successfully written to data.bin\n");
+    printf("Successfully saved to data.bin\n");
     return 0;
 }
 
@@ -82,9 +82,6 @@ bool loadLibrary(Library *lib)
     fread(&lib->book_count, sizeof(int), 1, file);
     fread(&lib->next_book_id, sizeof(int), 1, file);
     fread(lib->books, sizeof(Book), lib->book_count, file);
-
-    // printf("book_count=%d\n", lib->book_count);
-    // printf("next_book_id=%d\n", lib->next_book_id);
 
     fread(&lib->member_count, sizeof(int), 1, file);
     fread(&lib->next_member_id, sizeof(int), 1, file);
@@ -107,17 +104,6 @@ void freeLibrary(Library *lib)
 
 void summaryReport(Library *lib) // Ly Sievminh
 {
-    // displayBookSummary(lib);
-    /*
-    dISPLAY SUMMARY REPORT
-        - Total book titles
-        - Total book copies
-        - Total book available
-        - Total book borrowed
-
-        - Total members
-        - Total borrow records
-    */
     int total_titles = lib->book_count;
     int total_copies = 0;
     int total_available = 0;
@@ -161,16 +147,29 @@ void mainMenu(Library *lib)
 
     do
     {
-        printf("\n=================================\n");
-        printf("   LIBRARY MANAGEMENT SYSTEM\n");
-        printf("=================================\n");
-        printf("1. Book Management\n");
-        printf("2. Member Management\n");
-        printf("3. Borrow Management\n");
-        printf("4. Summary Report\n");
-        printf("0. Exit\n");
-        printf("=================================\n");
-        choice = getIntInput("Enter choice: ");
+        printf("\n");
+        puts("        _.--._  _.--._");
+        puts("  ,-=.-\":;:;:;\\\\':;:;:;\"-._");
+        puts("  \\\\\\:;:;:;:;:;\\\\:;:;:;:;:;\\\\");
+        puts("   \\\\\\:;:;:;:;:;\\\\:;:;:;:;:;\\\\");
+        puts("    \\\\\\:;:;:;:;:;\\\\:;:;:;:;:;\\\\");
+        puts("     \\\\\\:;:;:;:;:;\\\\:;::;:;:;:\\\\");
+        puts("      \\\\\\;:;::;:;:;\\\\:;:;:;::;:\\\\");
+        puts("       \\\\\\;;:;:_:--:\\\\:_:--:_;:;\\\\    ");
+        puts("        \\\\\\_.-\"      :       \"-._\\\\");
+        puts("         \\`_..--\"\"--.;.--\"\"--.._-=>");
+        puts("          \"");
+
+        printf("╔══════════════════════════════════════╗\n");
+        printf("║      LIBRARY MANAGEMENT SYSTEM       ║\n");
+        printf("╠══════════════════════════════════════╣\n");
+        printf("║ 1. Book Management                   ║\n");
+        printf("║ 2. Member Management                 ║\n");
+        printf("║ 3. Borrow Management                 ║\n");
+        printf("║ 4. Summary Report                    ║\n");
+        printf("║ 0. Exit                              ║\n");
+        printf("╚══════════════════════════════════════╝\n");
+        choice = getIntInput("\nEnter choice: ");
 
         switch (choice)
         {
@@ -187,14 +186,10 @@ void mainMenu(Library *lib)
             break;
 
         case 4:
-            // printf("\nTotal Books   : %d\n", lib->book_count);
-            // printf("Total Members : %d\n", lib->member_count);
-            // printf("Total Records : %d\n", lib->record_count);
             summaryReport(lib); // Ly Sievminh
             break;
 
         case 0:
-            printf("Proccess Ended!\n");
             break;
 
         default:
@@ -202,7 +197,4 @@ void mainMenu(Library *lib)
         }
 
     } while (choice != 0);
-}
-void displaySummary(Library *lib) // Ly Sievminh
-{
 }
