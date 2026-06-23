@@ -81,14 +81,63 @@ bool loadLibrary(Library *lib)
 
     fread(&lib->book_count, sizeof(int), 1, file);
     fread(&lib->next_book_id, sizeof(int), 1, file);
+
+    if (lib->book_count > lib->book_capacity)
+    {
+        Book *temp = realloc(
+            lib->books,
+            lib->book_count * sizeof(Book));
+
+        if (temp == NULL)
+        {
+            fclose(file);
+            return false;
+        }
+
+        lib->books = temp;
+        lib->book_capacity = lib->book_count;
+    }
+
     fread(lib->books, sizeof(Book), lib->book_count, file);
 
     fread(&lib->member_count, sizeof(int), 1, file);
     fread(&lib->next_member_id, sizeof(int), 1, file);
+
+    if (lib->member_count > lib->member_capacity)
+    {
+        Member *temp = realloc(
+            lib->members,
+            lib->member_count * sizeof(Member));
+
+        if (temp == NULL)
+        {
+            fclose(file);
+            return false;
+        }
+
+        lib->members = temp;
+        lib->member_capacity = lib->member_count;
+    }
+
     fread(lib->members, sizeof(Member), lib->member_count, file);
 
     fread(&lib->record_count, sizeof(int), 1, file);
     fread(&lib->next_record_id, sizeof(int), 1, file);
+    if (lib->record_count > lib->record_capacity)
+    {
+        BorrowRecord *temp = realloc(
+            lib->records,
+            lib->record_count * sizeof(BorrowRecord));
+
+        if (temp == NULL)
+        {
+            fclose(file);
+            return false;
+        }
+
+        lib->records = temp;
+        lib->record_capacity = lib->record_count;
+    }
     fread(lib->records, sizeof(BorrowRecord), lib->record_count, file);
 
     fclose(file);
