@@ -10,8 +10,8 @@
 
 void initLibrary(Library *lib)
 {
-    lib->book_capacity = 100;
-    lib->books = calloc(lib->book_capacity, sizeof(Book));
+    lib->book_capacity = 5;
+    lib->books = malloc(lib->book_capacity * sizeof(Book));
     if (lib->books == NULL)
     {
         printf("Memory allocation failed!\n");
@@ -20,8 +20,8 @@ void initLibrary(Library *lib)
     lib->book_count = 0;
     lib->next_book_id = 1001;
 
-    lib->member_capacity = 100;
-    lib->members = calloc(lib->member_capacity, sizeof(Member));
+    lib->member_capacity = 5;
+    lib->members = malloc(lib->member_capacity * sizeof(Member));
     if (lib->members == NULL)
     {
         printf("Memory allocation failed!\n");
@@ -30,8 +30,8 @@ void initLibrary(Library *lib)
     lib->member_count = 0;
     lib->next_member_id = 2001;
 
-    lib->record_capacity = 100;
-    lib->records = calloc(lib->record_capacity, sizeof(BorrowRecord));
+    lib->record_capacity = 5;
+    lib->records = malloc(lib->record_capacity * sizeof(BorrowRecord));
     if (lib->records == NULL)
     {
         printf("Memory allocation failed!\n");

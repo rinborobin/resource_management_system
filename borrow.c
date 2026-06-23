@@ -75,7 +75,7 @@ void returnBook(Library *lib, int book_id, int member_id)
 
 void printRecord(Library *lib, int rec_id)
 {
-    printf("\nRecord ID: %d\nMember Name: %s\nBook Title: %s\nStatus: %s\n", rec_id, lib->members[rec_id].name, lib->books[rec_id].title, lib->records[rec_id].returned == 1 ? "Returned" : "Borrowed");
+    printf("\nRecord ID: %d\nMember Name: %s\nBook Title: %s\nStatus: %s\n", lib->records[rec_id].borrow_id, lib->members[rec_id].name, lib->books[rec_id].title, lib->records[rec_id].returned == 1 ? "Returned" : "Borrowed");
 }
 
 void viewRecords(Library *lib)
@@ -109,11 +109,26 @@ void borrowMenu(Library *lib) // Ly Sievminh
         switch (choice)
         {
         case 1:
-            book_id = getIntInput("Enter Book ID: ");
-            member_id = getIntInput("Enter Member ID: ");
+            printf("\n");
+            printf(
+                "\n"
+                "╔══════════════════════════════════════╗\n"
+                "║             BORROW BOOK              ║\n"
+                "╚══════════════════════════════════════╝\n");
+            printf("\n");
+
+            book_id = getIntInput("Book ID: ");
+            member_id = getIntInput("Member ID: ");
             borrowBook(lib, member_id, book_id);
             break;
         case 2:
+            printf("\n");
+            printf(
+                "\n"
+                "╔══════════════════════════════════════╗\n"
+                "║             RETURN BOOK              ║\n"
+                "╚══════════════════════════════════════╝\n");
+            printf("\n");
             book_id = getIntInput("Enter Book ID: ");
             member_id = getIntInput("Enter Member ID: ");
             returnBook(lib, book_id, member_id);

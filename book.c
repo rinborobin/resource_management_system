@@ -325,7 +325,7 @@ void displayUniqueCat(Library *lib)
 
         if (!found)
         {
-            printf("  %s", lib->books[i].category);
+            printf("  %s\n", lib->books[i].category);
         }
     }
 }

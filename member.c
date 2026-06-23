@@ -7,7 +7,6 @@
 #include <ctype.h>
 Member inputMember(bool is_update)
 {
-    getchar();
     Member member;
 
     char name[100];
@@ -145,26 +144,16 @@ void memberMenu(Library *lib) // Ly Sievminh
     bool is_running = true;
     do
     {
-        printf("\n=================================\n");
-        printf("       Member Management Menu\n");
-        printf("=================================\n");
-        printf("1. Add Member\n");
-        printf("2. View Members\n");
-        printf("3. search Member\n");
-        printf("4. Update Member\n");
-        printf("5. Remove Member\n");
-
-        printf("0. Back to Main Menu\n");
 
         printf("\n");
         printf("╔══════════════════════════════════════╗\n"
-               "║      LIBRARY MANAGEMENT SYSTEM       ║\n"
+               "║       MEMBER MANAGEMENT SYSTEM       ║\n"
                "╠══════════════════════════════════════╣\n"
-               "║ 1. Book Management                   ║\n"
-               "║ 2. Member Management                 ║\n"
-               "║ 3. Borrow Management                 ║\n"
-               "║ 4. Summary Report                    ║\n"
-               "║ 4. Summary Report                    ║\n"
+               "║ 1. Add Member                        ║\n"
+               "║ 2. View Members                      ║\n"
+               "║ 3. Search Member                     ║\n"
+               "║ 4. Update Member                     ║\n"
+               "║ 5. Remove Member                     ║\n"
                "║ 0. Exit                              ║\n"
                "╚══════════════════════════════════════╝\n");
         printf("\n");
