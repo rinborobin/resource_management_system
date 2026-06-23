@@ -11,7 +11,7 @@
 void initLibrary(Library *lib)
 {
     lib->book_capacity = 100;
-    lib->books = malloc(lib->book_capacity * sizeof(Book));
+    lib->books = calloc(lib->book_capacity, sizeof(Book));
     if (lib->books == NULL)
     {
         printf("Memory allocation failed!\n");
@@ -21,7 +21,7 @@ void initLibrary(Library *lib)
     lib->next_book_id = 1001;
 
     lib->member_capacity = 100;
-    lib->members = malloc(lib->member_capacity * sizeof(Member));
+    lib->members = calloc(lib->member_capacity, sizeof(Member));
     if (lib->members == NULL)
     {
         printf("Memory allocation failed!\n");
@@ -31,7 +31,7 @@ void initLibrary(Library *lib)
     lib->next_member_id = 2001;
 
     lib->record_capacity = 100;
-    lib->records = malloc(lib->record_capacity * sizeof(BorrowRecord));
+    lib->records = calloc(lib->record_capacity, sizeof(BorrowRecord));
     if (lib->records == NULL)
     {
         printf("Memory allocation failed!\n");
@@ -66,8 +66,8 @@ bool saveLibrary(Library *lib)
     fwrite(lib->records, sizeof(BorrowRecord), lib->record_count, file);
 
     fclose(file);
-    printf("Successfully saved to data.bin\n");
-    return 0;
+
+    return true;
 }
 
 bool loadLibrary(Library *lib)
@@ -118,27 +118,52 @@ void summaryReport(Library *lib) // Ly Sievminh
     int book_capacity = lib->book_capacity;
     int books_stored = lib->book_count;
 
-    printf("\n=================================\n");
-    printf("        SUMMARY REPORT\n");
-    printf("=================================\n");
-    printf(" \n");
-    printf("Books");
-    printf("\n-----------------------------\n");
-    printf("\nTotal Book Titles   : %d\n", total_titles);
-    printf("Total Book Copies   : %d\n", total_copies);
-    printf("Total Available     : %d\n", total_available);
-    printf("Total Borrowed      : %d\n", total_borrowed);
-    printf("\n------------------------------\n");
-    printf("Members");
-    printf("\n------------------------------\n");
-    printf("\nTotal Members       : %d\n", total_members);
-    printf("Total Borrow Records: %d\n", total_records);
-    printf("\n------------------------------\n");
-    printf("System");
-    printf("\n------------------------------\n");
-    printf("\nBook Capacity       : %d\n", book_capacity);
-    printf("Books Stored         : %d\n", books_stored);
-    printf("\n=================================\n");
+    printf(
+        "\n"
+        "╔══════════════════════════════════════╗\n"
+        "║            SUMMARY REPORT            ║\n"
+        "╚══════════════════════════════════════╝\n"
+
+        "\n"
+        "┌──────────────────────────────────────┐\n"
+        "│ BOOKS                                │\n"
+        "└──────────────────────────────────────┘\n"
+        "┌──────────────────────────────────────┐\n"
+
+        "  Total Book Titles    : %d\n"
+        "  Total Book Copies    : %d\n"
+        "  Total Available      : %d\n"
+        "  Total Borrowed       : %d\n"
+        "└──────────────────────────────────────┘\n"
+
+        "\n"
+        "┌──────────────────────────────────────┐\n"
+        "│ MEMBERS                              │\n"
+        "└──────────────────────────────────────┘\n"
+        "┌──────────────────────────────────────┐\n"
+
+        "  Total Members        : %d\n"
+        "  Total Borrow Records : %d\n"
+        "└──────────────────────────────────────┘\n"
+
+        "\n"
+        "┌──────────────────────────────────────┐\n"
+        "│ SYSTEM                               │\n"
+        "└──────────────────────────────────────┘\n"
+        "┌──────────────────────────────────────┐\n"
+
+        "  Book Capacity        : %d\n"
+        "  Books Stored         : %d\n"
+        "└──────────────────────────────────────┘\n",
+
+        total_titles,
+        total_copies,
+        total_available,
+        total_borrowed,
+        total_members,
+        total_records,
+        book_capacity,
+        books_stored);
 }
 
 void mainMenu(Library *lib)
@@ -160,15 +185,15 @@ void mainMenu(Library *lib)
         puts("         \\`_..--\"\"--.;.--\"\"--.._-=>");
         puts("          \"");
 
-        printf("╔══════════════════════════════════════╗\n");
-        printf("║      LIBRARY MANAGEMENT SYSTEM       ║\n");
-        printf("╠══════════════════════════════════════╣\n");
-        printf("║ 1. Book Management                   ║\n");
-        printf("║ 2. Member Management                 ║\n");
-        printf("║ 3. Borrow Management                 ║\n");
-        printf("║ 4. Summary Report                    ║\n");
-        printf("║ 0. Exit                              ║\n");
-        printf("╚══════════════════════════════════════╝\n");
+        printf("╔══════════════════════════════════════╗\n"
+               "║      LIBRARY MANAGEMENT SYSTEM       ║\n"
+               "╠══════════════════════════════════════╣\n"
+               "║ 1. Book Management                   ║\n"
+               "║ 2. Member Management                 ║\n"
+               "║ 3. Borrow Management                 ║\n"
+               "║ 4. Summary Report                    ║\n"
+               "║ 0. Exit                              ║\n"
+               "╚══════════════════════════════════════╝\n");
         choice = getIntInput("\nEnter choice: ");
 
         switch (choice)

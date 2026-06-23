@@ -155,6 +155,19 @@ void memberMenu(Library *lib) // Ly Sievminh
         printf("5. Remove Member\n");
 
         printf("0. Back to Main Menu\n");
+
+        printf("\n");
+        printf("╔══════════════════════════════════════╗\n"
+               "║      LIBRARY MANAGEMENT SYSTEM       ║\n"
+               "╠══════════════════════════════════════╣\n"
+               "║ 1. Book Management                   ║\n"
+               "║ 2. Member Management                 ║\n"
+               "║ 3. Borrow Management                 ║\n"
+               "║ 4. Summary Report                    ║\n"
+               "║ 4. Summary Report                    ║\n"
+               "║ 0. Exit                              ║\n"
+               "╚══════════════════════════════════════╝\n");
+        printf("\n");
         choice = getIntInput("Enter Choice: ");
         switch (choice)
         {

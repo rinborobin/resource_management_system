@@ -95,14 +95,16 @@ void borrowMenu(Library *lib) // Ly Sievminh
     int choice, member_id, book_id;
     do
     {
-        printf("\n=================================\n");
-        printf("       BORROW MANAGEMENT\n");
-        printf("=================================\n");
-        printf("1. Borrow Book\n");
-        printf("2. Return Book\n");
-        printf("3. View Records\n");
-        printf("0. Back\n");
-        printf("=================================\n");
+        printf("\n");
+        printf("╔══════════════════════════════════════╗\n"
+               "║          BORROW MANAGEMENT           ║\n"
+               "╠══════════════════════════════════════╣\n"
+               "║ 1. Borrow Book                       ║\n"
+               "║ 2. Return Book                       ║\n"
+               "║ 3. View Records                      ║\n"
+               "║ 0. Exit                              ║\n"
+               "╚══════════════════════════════════════╝\n");
+        printf("\n");
         choice = getIntInput("Enter Choice: ");
         switch (choice)
         {
