@@ -112,13 +112,13 @@ void updateMember(Library *lib)
     int index = searchMember(lib, member_id);
     if (index == -1)
     {
-        printf("Member not found.\n");
+        printItemNotFound("MEMBER");
         return;
     }
     Member updated = inputMember(true);
     updated.member_id = lib->members[index].member_id;
     lib->members[index] = updated;
-    printf("Member updated successfully!\n");
+    printSuccessful("MEMBER UPDATED");
 }
 void removeMember(Library *lib)
 {
@@ -128,7 +128,7 @@ void removeMember(Library *lib)
     int index = searchMember(lib, member_id);
     if (index == -1)
     {
-        printf("Member not found.\n");
+        printItemNotFound("MEMBER");
         return;
     }
     for (int i = index; i < lib->member_count - 1; i++)
@@ -136,6 +136,7 @@ void removeMember(Library *lib)
         lib->members[i] = lib->members[i + 1];
     }
     lib->member_count--;
+    printSuccessful("MEMBER REMOVED");
 }
 
 void memberMenu(Library *lib) // Ly Sievminh
