@@ -1,9 +1,10 @@
-#include "borrow.h"
-#include "book.h"
-#include "library.h"
-#include "utils.h"
-#include "member.h"
 #include <stdio.h>
+
+#include "../borrow/borrow.h"
+#include "../book/book.h"
+#include "../library/library.h"
+#include "../utils/utils.h"
+#include "../member/member.h"
 
 BorrowRecord inputBorrowRecord()
 {

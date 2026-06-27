@@ -1,10 +1,12 @@
-#include "book.h"
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include "utils.h"
 #include <stdio.h>
 #include <ctype.h>
+
+#include "../book/book.h"
+#include "../utils/utils.h"
+
 Member inputMember(bool is_update)
 {
     Member member;

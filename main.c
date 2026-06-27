@@ -3,10 +3,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-#include "data.h"
-#include "book.h"
-#include "utils.h"
-#include "library.h"
+#include "./data/data.h"
+#include "./src/book/book.h"
+#include "./src/utils/utils.h"
+#include "./src/library/library.h"
 
 Library lib;
 

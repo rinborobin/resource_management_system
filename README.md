@@ -7,7 +7,7 @@ A brief description of what this project does and who it's for
 To compile the program, run the following command inside the main directory
 
 ```bash
-  gcc *.c -o <program_name>
+  gcc -Wall -Wextra main.c src/*/*.c -o <program_name>
 ```
 
 ## Running the program

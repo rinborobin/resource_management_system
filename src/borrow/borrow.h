@@ -1,7 +1,7 @@
 #ifndef BORROW_H
 #define BORROW_H
 
-#include "data.h"
+#include "../../data/data.h"
 
 void borrowMenu(Library *lib);
 void borrowBook(Library *lib, int member_id, int book_id);
