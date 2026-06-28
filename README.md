@@ -7,7 +7,13 @@ A brief description of what this project does and who it's for
 To compile the program, run the following command inside the main directory
 
 ```bash
-  gcc -Wall -Wextra main.c src/*/*.c -o <program_name>
+  gcc -Wall -Wextra main.c src/*/*.c -o <program_name.exe>
+```
+
+### Windows
+
+```bash
+gcc -Wall -Wextra main.c (Get-ChildItem src -Recurse *.c).FullName -o lib.exe
 ```
 
 ## Running the program
