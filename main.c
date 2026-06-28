@@ -16,13 +16,13 @@ Library lib;
 
 int main()
 {
+
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
     SetConsoleCP(CP_UTF8);
 #endif
 
     initLibrary(&lib);
-    // initMockData(&lib);
     loadLibrary(&lib);
 
     mainMenu(&lib);
