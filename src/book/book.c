@@ -347,7 +347,7 @@ int displayUniqueCat(Library *lib)
         }
     }
 
-    return 1;
+    return cat_count;
 }
 
 void displaySearchResult(Library *lib, int idx)
