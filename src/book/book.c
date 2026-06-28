@@ -8,40 +8,6 @@
 #include "../library/library.h"
 #include "../utils/utils.h"
 
-bool getInput(char *prompt, char *buffer, int size)
-{
-    printf("%s", prompt);
-
-    fgets(buffer, size, stdin);
-    buffer[strcspn(buffer, "\n")] = '\0';
-
-    return strcmp(buffer, "cancel") != 0;
-}
-
-bool getRequiredInput(char *prompt,
-                      char *buffer,
-                      int size,
-                      char *field_name)
-{
-    while (1)
-    {
-        if (!getInput(prompt, buffer, size))
-        {
-            return false;
-        }
-
-        trim(buffer);
-
-        if (strlen(buffer) == 0)
-        {
-            printf("%s cannot be empty.\n", field_name);
-            continue;
-        }
-
-        return true;
-    }
-}
-
 Book inputBook(bool is_update)
 {
     Book book;
@@ -95,15 +61,16 @@ Book inputBook(bool is_update)
         if (!is_update)
         {
             quantity = getIntInput("Quantity  : ");
-            book.quantity = quantity;
 
             if (quantity <= 0)
             {
                 printf("Quantity must be greater than 0.\n");
                 continue;
             }
+
+            book.quantity = quantity;
+            break;
         }
-        break;
     }
 
     strcpy(book.title, title);
@@ -484,6 +451,9 @@ void updateBook(Library *lib, int book_id)
     }
 
     Book book = inputBook(true);
+
+    if (book.book_id == -1)
+        return;
 
     book.book_id = lib->books[index].book_id;
     book.quantity = lib->books[index].quantity;

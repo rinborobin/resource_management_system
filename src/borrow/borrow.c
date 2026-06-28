@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "../borrow/borrow.h"
 #include "../book/book.h"
@@ -39,39 +40,91 @@ void borrowBook(Library *lib, int member_id, int book_id)
         return;
     }
 
-    BorrowRecord record;
+    if (lib->record_count == lib->record_capacity)
+    {
+        int new_capacity = lib->record_capacity * 2;
 
-    record.borrow_id = lib->next_record_id;
-    lib->next_record_id++;
+        BorrowRecord *temp = realloc(
+            lib->records,
+            new_capacity * sizeof(BorrowRecord));
 
-    lib->records[lib->record_count] = record;
-    lib->record_count++;
+        if (temp == NULL)
+        {
+            printf("Memory allocation failed!\n");
+            return;
+        }
+
+        lib->records = temp;
+        lib->record_capacity = new_capacity;
+    }
+
+    BorrowRecord record = {0};
+
+    record.borrow_id = lib->next_record_id++;
+    record.book_id = book_id;
+    record.member_id = member_id;
+    record.returned = false;
+
+    lib->records[lib->record_count++] = record;
 
     lib->books[book_index].available--;
 
-    printf("Book: %d\nBorrowed By: %d", member_id, book_id);
+    printf(
+        "\n"
+        "╔══════════════════════════════════════╗\n"
+        "║      BOOK BORROWED SUCCESSFULLY      ║\n"
+        "╚══════════════════════════════════════╝\n"
+        " Book Title : %s\n"
+        " Book ID    : %d\n"
+        " Member ID  : %d\n",
+        lib->books[book_index].title,
+        book_id,
+        member_id);
 }
 void returnBook(Library *lib, int book_id, int member_id)
 {
-
     int book_index = searchBookByID(lib, book_id);
     int member_index = searchMember(lib, member_id);
 
-    bool search_validation = book_index != -1 && member_index != -1;
-
-    if (!search_validation)
+    if (book_index == -1 || member_index == -1)
     {
         printf("Book or member not found.\n");
         return;
     }
 
-    if (lib->books[book_index].available <= 0)
+    int record_index = -1;
+
+    for (int i = 0; i < lib->record_count; i++)
     {
-        printf("Book unavailable.\n");
+        if (lib->records[i].book_id == book_id &&
+            lib->records[i].member_id == member_id &&
+            !lib->records[i].returned)
+        {
+            record_index = i;
+            break;
+        }
+    }
+
+    if (record_index == -1)
+    {
+        printf("No active borrow record found.\n");
         return;
     }
-    lib->record_count--;
+
+    lib->records[record_index].returned = true;
     lib->books[book_index].available++;
+
+    printf(
+        "\n"
+        "╔══════════════════════════════════════╗\n"
+        "║      BOOK RETURNED SUCCESSFULLY      ║\n"
+        "╚══════════════════════════════════════╝\n"
+        " Record ID : %d\n"
+        " Book ID   : %d\n"
+        " Member ID : %d\n",
+        lib->records[record_index].borrow_id,
+        book_id,
+        member_id);
 }
 
 void printRecord(Library *lib, int rec_id)

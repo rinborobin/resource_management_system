@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include <stdbool.h>
+
 #include "utils.h"
 
 void trim(char *s)
@@ -10,6 +12,62 @@ void trim(char *s)
         i++;
     while (((s[j++]) = (s[i++])))
         ;
+}
+bool getInput(char *prompt, char *buffer, int size)
+{
+    while (1)
+    {
+        printf("%s", prompt);
+
+        if (fgets(buffer, size, stdin) == NULL)
+        {
+            return false;
+        }
+        if (strchr(buffer, '\n') == NULL)
+        {
+            int ch;
+
+            while ((ch = getchar()) != '\n' && ch != EOF)
+                ;
+
+            printf("Input is too long. Maximum %d characters allowed.\n",
+                   size - 1);
+            continue;
+        }
+
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        if (strcmp(buffer, "cancel") == 0)
+        {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+bool getRequiredInput(char *prompt,
+                      char *buffer,
+                      int size,
+                      char *field_name)
+{
+    while (1)
+    {
+        if (!getInput(prompt, buffer, size))
+        {
+            return false;
+        }
+
+        trim(buffer);
+
+        if (strlen(buffer) == 0)
+        {
+            printf("%s cannot be empty.\n", field_name);
+            continue;
+        }
+
+        return true;
+    }
 }
 
 int getIntInput(const char *prompt)

@@ -117,6 +117,10 @@ void updateMember(Library *lib)
         return;
     }
     Member updated = inputMember(true);
+
+    if (updated.member_id == -1)
+        return;
+
     updated.member_id = lib->members[index].member_id;
     lib->members[index] = updated;
     printSuccessful("MEMBER UPDATED");

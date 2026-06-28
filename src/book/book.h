@@ -6,13 +6,9 @@
 
 Book inputBook(bool is_update);
 void bookMenu(Library *lib);
-void addBook(Library *lib);
 int searchBookByID(Library *lib, int book_id);
 void viewBooks(Library *lib, int index);
-void toLowerString(char str[]);
 void viewAllBooks(Library *lib);
-void updateBook(Library *lib, int book_id);
-void removeBook(Library *lib, int book_id);
 void displayBookSummary(Library *lib); // Ly Sievminh
 
 #endif
