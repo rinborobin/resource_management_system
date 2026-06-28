@@ -15,9 +15,7 @@ Member inputMember(bool is_update)
 
     printf("Enter the%s name: ", is_update ? " new" : "");
     fgets(name, sizeof(name), stdin);
-    member.name[strcspn(
-        member.name,
-        "\n")] = '\0';
+    name[strcspn(name, "\n")] = '\0';
 
     strcpy(member.name, name);
 
