@@ -1,8 +1,7 @@
-
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
-
-#include "../utils/utils.h"
+#include "utils.h"
 
 int getIntInput(const char *prompt)
 {
@@ -25,9 +24,39 @@ int getIntInput(const char *prompt)
             ;
     }
 }
+void printSuccessful(char *str)
+{
+    char msg[256];
+    sprintf(msg, "%s SUCCESFULLY", str);
+
+    int len = strlen(msg) + 13;
+
+    for (int i = 0; i < len; i++)
+        printf("-");
+    printf("\n");
+
+    printf("%*s%s\n", 5, "", msg);
+
+    for (int i = 0; i < len; i++)
+        printf("-");
+    printf("\n");
+}
 void printItemNotFound(char *str)
 {
-    printf("%s Not Found.\n", str);
+    char msg[256];
+    sprintf(msg, "%s NOT FOUND", str);
+
+    int len = strlen(msg) + 13;
+
+    for (int i = 0; i < len; i++)
+        printf("-");
+    printf("\n");
+
+    printf("%*s%s\n", 5, "", msg);
+
+    for (int i = 0; i < len; i++)
+        printf("-");
+    printf("\n");
 }
 void toLowerString(char str[])
 {
