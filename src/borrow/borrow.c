@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 #include "../borrow/borrow.h"
@@ -63,9 +64,18 @@ void borrowBook(Library *lib, int member_id, int book_id)
     record.borrow_id = lib->next_record_id++;
     record.book_id = book_id;
     record.member_id = member_id;
+
+    getCurrentDate(record.borrow_date);
+
     record.returned = false;
 
     lib->records[lib->record_count++] = record;
+
+    printf("\nDEBUG AFTER BORROW\n");
+    printf("Record Count : %d\n", lib->record_count);
+    printf("Borrow ID    : %d\n", lib->records[lib->record_count - 1].borrow_id);
+    printf("Book ID      : %d\n", lib->records[lib->record_count - 1].book_id);
+    printf("Member ID    : %d\n", lib->records[lib->record_count - 1].member_id);
 
     lib->books[book_index].available--;
 
@@ -110,6 +120,8 @@ void returnBook(Library *lib, int book_id, int member_id)
         printf("No active borrow record found.\n");
         return;
     }
+    getCurrentDate(
+        lib->records[record_index].return_date);
 
     lib->records[record_index].returned = true;
     lib->books[book_index].available++;
@@ -129,7 +141,35 @@ void returnBook(Library *lib, int book_id, int member_id)
 
 void printRecord(Library *lib, int rec_id)
 {
-    printf("\nRecord ID: %d\nMember Name: %s\nBook Title: %s\nStatus: %s\n", lib->records[rec_id].borrow_id, lib->members[rec_id].name, lib->books[rec_id].title, lib->records[rec_id].returned == 1 ? "Returned" : "Borrowed");
+    int book_index = searchBookByID(
+        lib,
+        lib->records[rec_id].book_id);
+
+    int member_index = searchMember(
+        lib,
+        lib->records[rec_id].member_id);
+
+    printf(
+        "╔══════════════════════════════════════╗\n"
+        "║          BOOK BORROW RECORD          ║\n"
+        "╚══════════════════════════════════════╝\n"
+        " Record ID        : %d\n"
+        " Book Title (ID)  : %s (%d)\n"
+        " Member Name (ID) : %s (%d)\n"
+        " Status           : %s\n"
+        " Borrowed Date    : %s\n"
+        " Returned Date    : %s\n",
+
+        lib->records[rec_id].borrow_id,
+        lib->books[book_index].title,
+        lib->books[book_index].book_id,
+        lib->members[member_index].name,
+        lib->members[member_index].member_id,
+        lib->records[rec_id].returned ? "Returned" : "Borrowed",
+        lib->records[rec_id].borrow_date,
+        strlen(lib->records[rec_id].return_date) == 0
+            ? "N/A"
+            : lib->records[rec_id].return_date);
 }
 
 void viewRecords(Library *lib)

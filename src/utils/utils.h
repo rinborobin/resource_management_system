@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+void getCurrentDate(char *date);
 void trim(char *str);
 bool getInput(char *prompt, char *buffer, int size);
 bool getRequiredInput(char *prompt,

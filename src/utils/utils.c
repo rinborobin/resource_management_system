@@ -2,8 +2,17 @@
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
+#include <time.h>
 
 #include "utils.h"
+
+void getCurrentDate(char *date)
+{
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+
+    strftime(date, 11, "%Y-%m-%d", tm);
+}
 
 void trim(char *s)
 {
