@@ -8,6 +8,12 @@
 #include "../library/library.h"
 #include "../utils/utils.h"
 
+typedef enum
+{
+    SORT_BY_TITLE,
+    SORT_BY_CATEGORY
+} SortType;
+
 Book inputBook(bool is_update)
 {
     Book book;
@@ -193,7 +199,61 @@ void searchByCategory(Library *lib, char *category)
     if (!is_found)
         printItemNotFound("BOOK");
 }
+void viewBooksSorted(Library *lib, SortType sortType)
+{
+    if (lib->book_count == 0)
+    {
+        printItemNotFound("Book");
+        return;
+    }
 
+    int *indices = malloc(lib->book_count * sizeof(int));
+
+    if (indices == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        indices[i] = i;
+    }
+
+    for (int i = 0; i < lib->book_count - 1; i++)
+    {
+        for (int j = 0; j < lib->book_count - i - 1; j++)
+        {
+            char *left;
+            char *right;
+
+            if (sortType == SORT_BY_TITLE)
+            {
+                left = lib->books[indices[j]].title;
+                right = lib->books[indices[j + 1]].title;
+            }
+            else
+            {
+                left = lib->books[indices[j]].author;
+                right = lib->books[indices[j + 1]].author;
+            }
+
+            if (strcmp(left, right) > 0)
+            {
+                int temp = indices[j];
+                indices[j] = indices[j + 1];
+                indices[j + 1] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        viewBooks(lib, indices[i]);
+    }
+
+    free(indices);
+}
 void searchByAuthor(Library *lib, char *author)
 {
     int is_found = 0;
@@ -222,93 +282,13 @@ void searchByAuthor(Library *lib, char *author)
 void viewBooksSortedByTitle(Library *lib)
 {
 
-    if (lib->book_count == 0)
-    {
-        printItemNotFound("Book");
-        return;
-    }
-
-    int *indices = malloc(
-        lib->book_count * sizeof(int));
-
-    if (indices == NULL)
-    {
-        printf("Memory allocation failed!\n");
-        return;
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        indices[i] = i;
-    }
-
-    for (int i = 0; i < lib->book_count - 1; i++)
-    {
-        for (int j = 0; j < lib->book_count - i - 1; j++)
-        {
-            if (strcmp(
-                    lib->books[indices[j]].title,
-                    lib->books[indices[j + 1]].title) > 0)
-            {
-                int temp = indices[j];
-                indices[j] = indices[j + 1];
-                indices[j + 1] = temp;
-            }
-        }
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        viewBooks(lib, indices[i]);
-    }
-
-    free(indices);
+    viewBooksSorted(lib, SORT_BY_TITLE);
 }
 
 void viewBooksSortedByAuthor(Library *lib)
 {
 
-    if (lib->book_count == 0)
-    {
-        printItemNotFound("Book");
-        return;
-    }
-
-    int *indices = malloc(
-        lib->book_count * sizeof(int));
-
-    if (indices == NULL)
-    {
-        printf("Memory allocation failed!\n");
-        return;
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        indices[i] = i;
-    }
-
-    for (int i = 0; i < lib->book_count - 1; i++)
-    {
-        for (int j = 0; j < lib->book_count - i - 1; j++)
-        {
-            if (strcmp(
-                    lib->books[indices[j]].author,
-                    lib->books[indices[j + 1]].author) > 0)
-            {
-                int temp = indices[j];
-                indices[j] = indices[j + 1];
-                indices[j + 1] = temp;
-            }
-        }
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        viewBooks(lib, indices[i]);
-    }
-
-    free(indices);
+    viewBooksSorted(lib, SORT_BY_CATEGORY);
 }
 
 int displayUniqueCat(Library *lib)
