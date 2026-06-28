@@ -1,7 +1,7 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
-#include "data.h"
+#include "../../data/data.h"
 #include <stdbool.h>
 
 void printItemNotFound(char *str);

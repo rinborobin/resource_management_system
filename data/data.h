@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #ifndef DATA_H
 #define DATA_H
 
@@ -20,11 +22,16 @@ typedef struct
 typedef struct
 {
     int borrow_id;
-    int book_id;
-    int member_id;
-    int returned;
-} BorrowRecord;
 
+    int member_id;
+    int book_id;
+
+    char borrow_date[11];
+    char return_date[11];
+
+    bool returned;
+
+} BorrowRecord;
 typedef struct
 {
     Book *books;

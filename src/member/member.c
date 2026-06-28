@@ -1,22 +1,21 @@
-#include "book.h"
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
-#include "utils.h"
 #include <stdio.h>
 #include <ctype.h>
+
+#include "../book/book.h"
+#include "../utils/utils.h"
+
 Member inputMember(bool is_update)
 {
-    getchar();
     Member member;
 
     char name[100];
 
     printf("Enter the%s name: ", is_update ? " new" : "");
     fgets(name, sizeof(name), stdin);
-    member.name[strcspn(
-        member.name,
-        "\n")] = '\0';
+    name[strcspn(name, "\n")] = '\0';
 
     strcpy(member.name, name);
 
@@ -112,13 +111,17 @@ void updateMember(Library *lib)
     int index = searchMember(lib, member_id);
     if (index == -1)
     {
-        printf("Member not found.\n");
+        printItemNotFound("MEMBER");
         return;
     }
     Member updated = inputMember(true);
+
+    if (updated.member_id == -1)
+        return;
+
     updated.member_id = lib->members[index].member_id;
     lib->members[index] = updated;
-    printf("Member updated successfully!\n");
+    printSuccessful("MEMBER UPDATED");
 }
 void removeMember(Library *lib)
 {
@@ -128,7 +131,7 @@ void removeMember(Library *lib)
     int index = searchMember(lib, member_id);
     if (index == -1)
     {
-        printf("Member not found.\n");
+        printItemNotFound("MEMBER");
         return;
     }
     for (int i = index; i < lib->member_count - 1; i++)
@@ -136,6 +139,7 @@ void removeMember(Library *lib)
         lib->members[i] = lib->members[i + 1];
     }
     lib->member_count--;
+    printSuccessful("MEMBER REMOVED");
 }
 
 void memberMenu(Library *lib) // Ly Sievminh
@@ -145,16 +149,19 @@ void memberMenu(Library *lib) // Ly Sievminh
     bool is_running = true;
     do
     {
-        printf("\n=================================\n");
-        printf("       Member Management Menu\n");
-        printf("=================================\n");
-        printf("1. Add Member\n");
-        printf("2. View Members\n");
-        printf("3. search Member\n");
-        printf("4. Update Member\n");
-        printf("5. Remove Member\n");
 
-        printf("0. Back to Main Menu\n");
+        printf("\n");
+        printf("╔══════════════════════════════════════╗\n"
+               "║       MEMBER MANAGEMENT SYSTEM       ║\n"
+               "╠══════════════════════════════════════╣\n"
+               "║ 1. Add Member                        ║\n"
+               "║ 2. View Members                      ║\n"
+               "║ 3. Search Member                     ║\n"
+               "║ 4. Update Member                     ║\n"
+               "║ 5. Remove Member                     ║\n"
+               "║ 0. Exit                              ║\n"
+               "╚══════════════════════════════════════╝\n");
+        printf("\n");
         choice = getIntInput("Enter Choice: ");
         switch (choice)
         {

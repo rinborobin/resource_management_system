@@ -1,7 +1,7 @@
 #ifndef MEMBER_H
 #define MEMBER_H
 
-#include "data.h"
+#include "../../data/data.h"
 
 void memberMenu(Library *lib);
 void addMember(Library *lib);
