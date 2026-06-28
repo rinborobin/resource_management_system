@@ -9,11 +9,7 @@ The system allows librarians to manage books, members, and borrowing records thr
 To compile the program, run the following command inside the main directory
 
 ```bash
-<<<<<<< HEAD
-  gcc -Wall -Wextra main.c src/*/*.c -o <program_name.exe>
-=======
   gcc -Wall -Wextra main.c src/*/*.c -o library.exe
->>>>>>> 9e1ff61ae9037faf58f130b578753a0a0a52e6db
 ```
 ### PowerShell
 
