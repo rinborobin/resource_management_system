@@ -3,6 +3,15 @@
 #include <ctype.h>
 #include "utils.h"
 
+void trim(char *s)
+{
+    int i = 0, j = 0;
+    while (s[i] == ' ' || s[i] == '\t' || s[i] == '\n')
+        i++;
+    while (((s[j++]) = (s[i++])))
+        ;
+}
+
 int getIntInput(const char *prompt)
 {
     int value;

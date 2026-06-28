@@ -18,6 +18,30 @@ bool getInput(char *prompt, char *buffer, int size)
     return strcmp(buffer, "cancel") != 0;
 }
 
+bool getRequiredInput(char *prompt,
+                      char *buffer,
+                      int size,
+                      char *field_name)
+{
+    while (1)
+    {
+        if (!getInput(prompt, buffer, size))
+        {
+            return false;
+        }
+
+        trim(buffer);
+
+        if (strlen(buffer) == 0)
+        {
+            printf("%s cannot be empty.\n", field_name);
+            continue;
+        }
+
+        return true;
+    }
+}
+
 Book inputBook(bool is_update)
 {
     Book book;
@@ -36,61 +60,34 @@ Book inputBook(bool is_update)
 
     printf("\n(Type 'cancel' at any time to return)\n");
 
-    while (1)
+    if (!getRequiredInput(
+            is_update ? "New Title    : " : "Title        : ",
+            title,
+            sizeof(title),
+            "Title"))
     {
-        if (!getInput(
-                is_update ? "New Title    : " : "Title        : ",
-                title,
-                sizeof(title)))
-        {
-            book.book_id = -1;
-            return book;
-        }
-
-        if (strlen(title) == 0)
-        {
-            printf("Title cannot be empty.\n");
-            continue;
-        }
-        break;
+        book.book_id = -1;
+        return book;
     }
 
-    while (1)
+    if (!getRequiredInput(
+            is_update ? "New Author   : " : "Author       : ",
+            author,
+            sizeof(author),
+            "Author"))
     {
-        if (!getInput(
-                is_update ? "New Author   : " : "Author       : ",
-                author,
-                sizeof(author)))
-        {
-            book.book_id = -1;
-            return book;
-        }
-
-        if (strlen(author) == 0)
-        {
-            printf("Author cannot be empty.\n");
-            continue;
-        }
-        break;
+        book.book_id = -1;
+        return book;
     }
 
-    while (1)
+    if (!getRequiredInput(
+            is_update ? "New Category : " : "Category     : ",
+            category,
+            sizeof(category),
+            "Category"))
     {
-        if (!getInput(
-                is_update ? "New Category : " : "Category     : ",
-                category,
-                sizeof(category)))
-        {
-            book.book_id = -1;
-            return book;
-        }
-
-        if (strlen(category) == 0)
-        {
-            printf("Category cannot be empty.\n");
-            continue;
-        }
-        break;
+        book.book_id = -1;
+        return book;
     }
 
     while (1)
@@ -99,6 +96,7 @@ Book inputBook(bool is_update)
         {
             quantity = getIntInput("Quantity  : ");
             book.quantity = quantity;
+
             if (quantity <= 0)
             {
                 printf("Quantity must be greater than 0.\n");
@@ -177,7 +175,7 @@ int searchBookByID(Library *lib, int book_id)
     return -1;
 }
 
-int searchByTitle(Library *lib, char *title)
+void searchByTitle(Library *lib, char *title)
 {
     int is_found = 0;
     char book_title[100];
@@ -381,6 +379,8 @@ int displayUniqueCat(Library *lib)
             printf("  %s\n", lib->books[i].category);
         }
     }
+
+    return 1;
 }
 
 void displaySearchResult(Library *lib, int idx)
