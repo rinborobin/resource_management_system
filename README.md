@@ -11,7 +11,7 @@ To compile the program, run the following command inside the main directory
 ```bash
   gcc -Wall -Wextra main.c src/*/*.c -o library.exe
 ```
-### Windows 
+### PowerShell
 
 ```bash
   $files = Get-ChildItem src -Recurse -Filter *.c | Select-Object -ExpandProperty FullName
