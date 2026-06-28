@@ -138,8 +138,9 @@ int searchBookByID(Library *lib, int book_id)
     return -1;
 }
 
-void searchByTitle(Library *lib, char *title)
+int searchByTitle(Library *lib, char *title)
 {
+    int is_found = 0;
     char book_title[100];
     char search_title[100];
 
@@ -155,12 +156,17 @@ void searchByTitle(Library *lib, char *title)
         if (strstr(book_title, search_title) != NULL)
         {
             viewBooks(lib, i);
+            is_found = 1;
         }
     }
+
+    if (!is_found)
+        printItemNotFound("BOOK");
 }
 
 void searchByCategory(Library *lib, char *category)
 {
+    int is_found = 0;
     char book_category[50];
     char search_category[50];
 
@@ -176,12 +182,17 @@ void searchByCategory(Library *lib, char *category)
         if (strstr(book_category, search_category) != NULL)
         {
             viewBooks(lib, i);
+            is_found = 1;
         }
     }
+
+    if (!is_found)
+        printItemNotFound("BOOK");
 }
 
 void searchByAuthor(Library *lib, char *author)
 {
+    int is_found = 0;
     char book_author[100];
     char search_author[100];
 
@@ -193,20 +204,17 @@ void searchByAuthor(Library *lib, char *author)
 
         toLowerString(book_author);
         toLowerString(search_author);
-        // printf("Inside Loop\n");
 
         if (strstr(book_author, search_author) != NULL)
         {
-            // printf("Matched\n");
             viewBooks(lib, i);
+            is_found = 1;
         }
-        // else
-        // {
-        //     printf("No match\n");
-        // }
     }
-}
 
+    if (!is_found)
+        printItemNotFound("BOOK");
+}
 void viewBooksSortedByTitle(Library *lib)
 {
 
@@ -299,8 +307,13 @@ void viewBooksSortedByAuthor(Library *lib)
     free(indices);
 }
 
-void displayUniqueCat(Library *lib)
+int displayUniqueCat(Library *lib)
 {
+    if (lib->book_count == 0)
+    {
+        return -1;
+    }
+    int cat_count = 0;
     for (int i = 0; i < lib->book_count; i++)
     {
         int found = 0;
@@ -319,6 +332,7 @@ void displayUniqueCat(Library *lib)
             if (strcmp(cat1, cat2) == 0)
             {
                 found = 1;
+                cat_count++;
                 break;
             }
         }
@@ -338,7 +352,7 @@ void displaySearchResult(Library *lib, int idx)
     }
     else
     {
-        printItemNotFound("Book");
+        printItemNotFound("BOOK");
     }
 }
 
@@ -424,6 +438,11 @@ void addBook(Library *lib)
 void updateBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
+    if (index == -1)
+    {
+        printItemNotFound("BOOK");
+        return;
+    }
 
     Book book = inputBook(true);
 
@@ -432,18 +451,25 @@ void updateBook(Library *lib, int book_id)
     book.available = lib->books[index].available;
     lib->books[index] = book;
 
-    printf("Book updated successfully!\n");
+    printSuccessful("BOOK UPDATED");
 }
 
 void removeBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
 
+    if (index == -1)
+    {
+        printItemNotFound("BOOK");
+        return;
+    }
+
     for (int i = index; i < lib->book_count - 1; i++)
     {
         lib->books[i] = lib->books[i + 1];
     }
     lib->book_count--;
+    printSuccessful("BOOK REMOVED");
 }
 
 void displayBookSummary(Library *lib)
@@ -574,6 +600,11 @@ void bookMenu(Library *lib)
                                           "└───────────────────────────────┘\n"
                                           " ID: ");
                     int id_idx = searchBookByID(lib, book_id);
+                    if (id_idx == -1)
+                    {
+                        printItemNotFound("BOOK");
+                        break;
+                    }
                     displaySearchResult(lib, id_idx);
                     break;
                 case 2:
@@ -598,19 +629,26 @@ void bookMenu(Library *lib)
                     printf(
                         "\n"
                         "┌───────────────────────────────┐\n"
-                        "│       Search by Author        │\n"
+                        "│       Search by Category      │\n"
                         "└───────────────────────────────┘\n");
 
-                    printf("┌───────────────────────────────┐\n");
+                    if (displayUniqueCat(lib) == -1)
+                    {
+                        printItemNotFound("CATEGORY");
+                    }
+                    else
+                    {
+                        printf("┌───────────────────────────────┐\n");
 
-                    displayUniqueCat(lib);
+                        displayUniqueCat(lib);
 
-                    printf("└───────────────────────────────┘\n");
-
-                    printf("Enter Book Category: ");
-                    fgets(category, sizeof(category), stdin);
-                    category[strcspn(category, "\n")] = '\0';
-                    searchByCategory(lib, category);
+                        printf("└───────────────────────────────┘\n");
+                        printf("Enter Book Category: ");
+                        fgets(category, sizeof(category), stdin);
+                        category[strcspn(category, "\n")] = '\0';
+                        searchByCategory(lib, category);
+                        break;
+                    }
 
                     break;
                 case 0:
