@@ -134,6 +134,19 @@ void removeMember(Library *lib)
         printItemNotFound("MEMBER");
         return;
     }
+
+    for (int i = 0; i < lib->record_count; i++)
+    {
+        if (lib->records[i].member_id == lib->members[index].member_id &&
+            !lib->records[i].returned)
+        {
+            printf("--------------------------------------\n");
+            printf("            CANNOT REMOVE!            \n");
+            printf("      Member is currently active.     \n");
+            printf("--------------------------------------\n");
+            return;
+        }
+    }
     for (int i = index; i < lib->member_count - 1; i++)
     {
         lib->members[i] = lib->members[i + 1];
