@@ -344,6 +344,7 @@ void displaySearchResult(Library *lib, int idx)
 
 int checkDuplicateBook(Library *lib, char *title, char *author)
 {
+
     for (int i = 0; i < lib->book_count; i++)
     {
         if (compareChar(lib->books[i].title, title) &&
@@ -424,6 +425,7 @@ void addBook(Library *lib)
 void updateBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
+
     if (index == -1)
     {
         printItemNotFound("BOOK");
@@ -435,9 +437,21 @@ void updateBook(Library *lib, int book_id)
     if (book.book_id == -1)
         return;
 
+    int duplicate = checkDuplicateBook(
+        lib,
+        book.title,
+        book.author);
+
+    if (duplicate != -1 && duplicate != index)
+    {
+        printf("Another book with the same title and author already exists.\n");
+        return;
+    }
+
     book.book_id = lib->books[index].book_id;
     book.quantity = lib->books[index].quantity;
     book.available = lib->books[index].available;
+
     lib->books[index] = book;
 
     printSuccessful("BOOK UPDATED");
