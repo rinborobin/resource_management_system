@@ -149,6 +149,12 @@ void printRecord(Library *lib, int rec_id)
         lib,
         lib->records[rec_id].member_id);
 
+    if (book_index == -1 || member_index == -1)
+    {
+        printf("Invalid borrow record.\n");
+        return;
+    }
+
     printf(
         "╔══════════════════════════════════════╗\n"
         "║          BOOK BORROW RECORD          ║\n"
