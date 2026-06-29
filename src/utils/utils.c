@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdbool.h>
@@ -82,21 +83,32 @@ bool getRequiredInput(char *prompt,
 int getIntInput(const char *prompt)
 {
     int value;
+    int result;
+    int ch;
 
     while (1)
     {
         printf("%s", prompt);
 
-        if (scanf("%d", &value) == 1)
+        result = scanf("%d", &value);
+
+        if (result == 1)
         {
-            while (getchar() != '\n')
+            while ((ch = getchar()) != '\n' && ch != EOF)
                 ;
+
             return value;
+        }
+
+        if (result == EOF)
+        {
+            printf("\nProgram terminated. EXIT(0)\n");
+            exit(0);
         }
 
         printf("Invalid input! Please enter a number.\n");
 
-        while (getchar() != '\n')
+        while ((ch = getchar()) != '\n' && ch != EOF)
             ;
     }
 }
