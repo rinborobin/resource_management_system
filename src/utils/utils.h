@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+bool isValidName(const char *str);
 bool containsDigit(const char *str);
 void getCurrentDate(char *date);
 void trim(char *str);

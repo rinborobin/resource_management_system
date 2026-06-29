@@ -7,6 +7,19 @@
 
 #include "utils.h"
 
+bool isValidName(const char *str)
+{
+    for (int i = 0; str[i] != '\0'; i++)
+    {
+        unsigned char ch = str[i];
+        if (!isprint(ch))
+            return false; // no control chars
+        if (strchr("$%^&*+=<>\\/:@!", ch))
+            return false; // disallowed symbols
+    }
+    return true;
+}
+
 bool containsDigit(const char *str)
 {
     while (*str)

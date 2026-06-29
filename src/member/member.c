@@ -37,6 +37,12 @@ Member inputMember(bool is_update)
             return member;
         }
 
+        if (!isValidName(name))
+        {
+            printf("Name cannot contain special characters.\n");
+            continue;
+        }
+
         if (containsDigit(name))
         {
             printf("Name cannot contain digits.\n");
