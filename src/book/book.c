@@ -449,8 +449,20 @@ void updateBook(Library *lib, int book_id)
     }
 
     book.book_id = lib->books[index].book_id;
-    book.quantity = lib->books[index].quantity;
-    book.available = lib->books[index].available;
+
+    int borrowed =
+        lib->books[index].quantity -
+        lib->books[index].available;
+
+    if (book.quantity < borrowed)
+    {
+        printf(
+            "Quantity cannot be less than borrowed books (%d).\n",
+            borrowed);
+        return;
+    }
+
+    book.available = book.quantity - borrowed;
 
     lib->books[index] = book;
 
