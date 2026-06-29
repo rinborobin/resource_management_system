@@ -453,6 +453,20 @@ void removeBook(Library *lib, int book_id)
         return;
     }
 
+    for (int i = 0; i < lib->record_count; i++)
+    {
+        if (lib->records[i].book_id == lib->books[index].book_id &&
+            !lib->records[i].returned)
+        {
+            printf("--------------------------------------\n");
+            printf("            CANNOT REMOVE!            \n");
+            printf("      Book is currently borrowed.     \n");
+            printf("--------------------------------------\n");
+
+            return;
+        }
+    }
+
     for (int i = index; i < lib->book_count - 1; i++)
     {
         lib->books[i] = lib->books[i + 1];
