@@ -33,7 +33,7 @@ void borrowBook(Library *lib, int member_id, int book_id)
         return;
     }
 
-    if (member_id == -1)
+    if (member_index == -1)
     {
         printItemNotFound("MEMBER");
         return;
@@ -158,6 +158,44 @@ void returnBook(Library *lib, int book_id, int member_id)
         book_id,
         member_id);
 }
+
+void removeRecord(Library *lib, int record_id)
+{
+    int index = -1;
+
+    for (int i = 0; i < lib->record_count; i++)
+    {
+        if (lib->records[i].borrow_id == record_id)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1)
+    {
+        printItemNotFound("BORROW RECORD");
+        return;
+    }
+
+    if (!lib->records[index].returned)
+    {
+        printf("--------------------------------------\n");
+        printf("            CANNOT REMOVE!            \n");
+        printf("      Record is currently active.     \n");
+        printf("--------------------------------------\n");
+        return;
+    }
+
+    for (int i = index; i < lib->record_count - 1; i++)
+    {
+        lib->records[i] = lib->records[i + 1];
+    }
+
+    lib->record_count--;
+
+    printSuccessful("BORROW RECORD REMOVED");
+}
 void printRecord(Library *lib, int rec_id)
 {
     int book_index = searchBookByID(
@@ -168,9 +206,9 @@ void printRecord(Library *lib, int rec_id)
         lib,
         lib->records[rec_id].member_id);
 
-    if (book_index == -1 || member_index == -1)
+    if (lib->record_count == 0)
     {
-        printf("Invalid borrow record.\n");
+        printItemNotFound("NO ACTIVE RECORD");
         return;
     }
 
@@ -221,6 +259,7 @@ void borrowMenu(Library *lib) // Ly Sievminh
                "║ 1. Borrow Book                       ║\n"
                "║ 2. Return Book                       ║\n"
                "║ 3. View Records                      ║\n"
+               "║ 4. Remove Record                     ║\n"
                "║ 0. Exit                              ║\n"
                "╚══════════════════════════════════════╝\n");
         printf("\n");
@@ -254,6 +293,10 @@ void borrowMenu(Library *lib) // Ly Sievminh
             break;
         case 3:
             viewRecords(lib);
+            break;
+        case 4:
+            int record_id = getIntInput("Enter Record ID: ");
+            removeRecord(lib, record_id);
             break;
         case 0:
             break;
