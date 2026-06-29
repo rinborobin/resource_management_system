@@ -579,13 +579,13 @@ void bookMenu(Library *lib)
                 {
                 case 1:
                     printf("┌──────────────────────────────────────────────────┐\n");
-                    printf("│                  Sorted by Title                 │\n");
+                    printf("│               Sorted by Title (A_Z)              │\n");
                     printf("└──────────────────────────────────────────────────┘\n");
                     viewBooksSortedByTitle(lib);
                     break;
                 case 2:
                     printf("┌──────────────────────────────────────────────────┐\n");
-                    printf("│                  Sorted by Author                │\n");
+                    printf("│               Sorted by Author (A_Z)             │\n");
                     printf("└──────────────────────────────────────────────────┘\n");
                     viewBooksSortedByAuthor(lib);
                 case 0:
