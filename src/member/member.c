@@ -10,15 +10,43 @@
 Member inputMember(bool is_update)
 {
     Member member;
-
     char name[100];
 
-    printf("Enter the%s name: ", is_update ? " new" : "");
-    fgets(name, sizeof(name), stdin);
-    name[strcspn(name, "\n")] = '\0';
+    while (1)
+    {
+
+        printf("\n");
+        printf(is_update ? "\n"
+                           "╔══════════════════════════════════════╗\n"
+                           "║             UPDATE NAME              ║\n"
+                           "╚══════════════════════════════════════╝\n"
+                         : "\n"
+                           "╔══════════════════════════════════════╗\n"
+                           "║               ADD NAME               ║\n"
+                           "╚══════════════════════════════════════╝\n");
+
+        printf("\n(Type 'cancel' at any time to return)\n");
+
+        if (!getRequiredInput(
+                is_update ? "New Name    : " : "Name        : ",
+                name,
+                sizeof(name),
+                "Title"))
+        {
+            member.member_id = -1;
+            return member;
+        }
+
+        if (containsDigit(name))
+        {
+            printf("Name cannot contain digits.\n");
+            continue;
+        }
+
+        break;
+    }
 
     strcpy(member.name, name);
-
     return member;
 }
 
