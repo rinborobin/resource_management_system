@@ -27,17 +27,22 @@ void borrowBook(Library *lib, int member_id, int book_id)
     int book_index = searchBookByID(lib, book_id);
     int member_index = searchMember(lib, member_id);
 
-    bool search_validation = book_index != -1 && member_index != -1;
-
-    if (!search_validation)
+    if (book_index == -1)
     {
-        printf("Book or member not found.\n");
+        printItemNotFound("BOOK");
         return;
     }
 
+    if (member_id == -1)
+    {
+        printItemNotFound("MEMBER");
+        return;
+    }
     if (lib->books[book_index].available <= 0)
     {
-        printf("Book unavailable.\n");
+        printf("----------------------\n");
+        printf("  BOOK UNAVAILABLE.\n");
+        printf("----------------------\n");
         return;
     }
 
@@ -71,12 +76,6 @@ void borrowBook(Library *lib, int member_id, int book_id)
 
     lib->records[lib->record_count++] = record;
 
-    printf("\nDEBUG AFTER BORROW\n");
-    printf("Record Count : %d\n", lib->record_count);
-    printf("Borrow ID    : %d\n", lib->records[lib->record_count - 1].borrow_id);
-    printf("Book ID      : %d\n", lib->records[lib->record_count - 1].book_id);
-    printf("Member ID    : %d\n", lib->records[lib->record_count - 1].member_id);
-
     lib->books[book_index].available--;
 
     printf(
@@ -91,39 +90,60 @@ void borrowBook(Library *lib, int member_id, int book_id)
         book_id,
         member_id);
 }
+
+int searchBorrowRecord(
+    Library *lib,
+    int member_id,
+    int book_id)
+{
+    for (int i = 0; i < lib->record_count; i++)
+    {
+        if (lib->records[i].member_id == member_id &&
+            lib->records[i].book_id == book_id &&
+            !lib->records[i].returned)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
 void returnBook(Library *lib, int book_id, int member_id)
 {
     int book_index = searchBookByID(lib, book_id);
     int member_index = searchMember(lib, member_id);
 
-    if (book_index == -1 || member_index == -1)
+    if (member_index == -1)
     {
-        printf("Book or member not found.\n");
+        printItemNotFound("MEMBER");
         return;
     }
 
-    int record_index = -1;
-
-    for (int i = 0; i < lib->record_count; i++)
+    if (book_index == -1)
     {
-        if (lib->records[i].book_id == book_id &&
-            lib->records[i].member_id == member_id &&
-            !lib->records[i].returned)
-        {
-            record_index = i;
-            break;
-        }
+        printItemNotFound("BOOK");
+        return;
     }
+
+    int record_index = searchBorrowRecord(lib, member_id, book_id);
 
     if (record_index == -1)
     {
-        printf("No active borrow record found.\n");
+        printItemNotFound("ACTIVE BORROW RECORD");
         return;
     }
-    getCurrentDate(
-        lib->records[record_index].return_date);
+
+    if (lib->records[record_index].returned)
+    {
+        printf("--------------------------\n");
+        printf("  BOOK ALREADY RETURNED.\n");
+        printf("--------------------------\n");
+        return;
+    }
 
     lib->records[record_index].returned = true;
+    getCurrentDate(lib->records[record_index].return_date);
+
     lib->books[book_index].available++;
 
     printf(
@@ -138,7 +158,6 @@ void returnBook(Library *lib, int book_id, int member_id)
         book_id,
         member_id);
 }
-
 void printRecord(Library *lib, int rec_id)
 {
     int book_index = searchBookByID(
@@ -182,7 +201,7 @@ void viewRecords(Library *lib)
 {
     if (lib->record_count == 0)
     {
-        printItemNotFound("Record");
+        printItemNotFound("RECORD");
         return;
     }
     for (int i = 0; i < lib->record_count; i++)
