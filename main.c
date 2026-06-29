@@ -23,7 +23,13 @@ int main()
 #endif
 
     initLibrary(&lib);
-    loadLibrary(&lib);
+    if (!loadLibrary(&lib))
+    {
+        printf("┌──────────────────────────────────────┐\n");
+        printf("│         NO SAVED DATA FOUND          │\n");
+        printf("│     STARTING WITH EMPTY LIBRARY      │\n");
+        printf("└──────────────────────────────────────┘\n");
+    }
 
     mainMenu(&lib);
 
