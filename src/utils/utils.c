@@ -47,6 +47,8 @@ bool getInput(char *prompt, char *buffer, int size)
 
         buffer[strcspn(buffer, "\n")] = '\0';
 
+        trim(buffer);
+
         if (strcmp(buffer, "cancel") == 0)
         {
             return false;
