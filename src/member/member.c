@@ -50,7 +50,7 @@ void addMember(Library *lib)
     lib->members[lib->member_count] = member;
     lib->member_count++;
 
-    printf("Member added successfully!\n");
+    printSuccessful("MEMBER ADDED");
 }
 
 int searchMember(Library *lib, int member_id)
@@ -95,7 +95,7 @@ void viewAllMembers(Library *lib)
 {
     if (lib->member_count == 0)
     {
-        printItemNotFound("Member");
+        printItemNotFound("MEMBER");
         return;
     }
     for (int i = 0; i < lib->member_count; i++)
@@ -194,12 +194,29 @@ void memberMenu(Library *lib) // Ly Sievminh
                 printf("1. ID\n");
                 printf("2. Name\n");
                 printf("0. Back\n");
+                printf("\n");
+                printf("╔══════════════════════════════════════╗\n"
+                       "║           SEARCH MEMBER BY           ║\n"
+                       "╠══════════════════════════════════════╣\n"
+                       "║ 1. ID                                ║\n"
+                       "║ 2. Name                              ║\n"
+                       "║ 0. Exit                              ║\n"
+                       "╚══════════════════════════════════════╝\n");
+                printf("\n");
                 search_menu_choice = getIntInput("Enter Choice: ");
                 switch (search_menu_choice)
                 {
                 case 1:
                     member_id = getIntInput("Enter Member ID to Search: ");
-                    searchMember(lib, member_id);
+                    int index = searchMember(lib, member_id);
+                    if (index == -1)
+                    {
+                        printItemNotFound("MEMBER");
+                    }
+                    else
+                    {
+                        viewMembers(lib, index);
+                    }
                     break;
                 case 2:
                     printf("Enter the member name to search: ");
