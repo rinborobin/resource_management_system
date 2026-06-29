@@ -11,12 +11,14 @@ To compile the program, run the following command inside the main directory
 ```bash
   gcc -Wall -Wextra main.c src/*/*.c -o library.exe
 ```
+
 ### PowerShell
 
 ```bash
   $files = Get-ChildItem src -Recurse -Filter *.c | Select-Object -ExpandProperty FullName
   gcc -Wall -Wextra main.c $files -o library.exe
 ```
+
 ## Running the program
 
 After compiling
@@ -32,6 +34,7 @@ Installing:
 ```bash
   mingw32-make
 ```
+
 Compiling:
 
 ```bash

@@ -8,6 +8,10 @@
 #include "../member/member.h"
 #include "../borrow/borrow.h"
 
+#define MAX_BOOKS 100000
+#define MAX_MEMBERS 10000
+#define MAX_RECORDS 100000
+
 void initLibrary(Library *lib)
 {
     lib->book_capacity = 5;
@@ -75,18 +79,30 @@ bool loadLibrary(Library *lib)
     FILE *file = fopen("./data/data.bin", "rb");
     if (file == NULL)
     {
-        // printf("Error opening file!\n");
         return false;
     }
 
-    fread(&lib->book_count, sizeof(int), 1, file);
-    fread(&lib->next_book_id, sizeof(int), 1, file);
+    int book_count;
+    int member_count;
+    int record_count;
 
-    if (lib->book_count > lib->book_capacity)
+    if (fread(&book_count, sizeof(int), 1, file) != 1)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (book_count < 0 || book_count > MAX_BOOKS)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (book_count > lib->book_capacity)
     {
         Book *temp = realloc(
             lib->books,
-            lib->book_count * sizeof(Book));
+            book_count * sizeof(Book));
 
         if (temp == NULL)
         {
@@ -95,19 +111,40 @@ bool loadLibrary(Library *lib)
         }
 
         lib->books = temp;
-        lib->book_capacity = lib->book_count;
+        lib->book_capacity = book_count;
     }
 
-    fread(lib->books, sizeof(Book), lib->book_count, file);
+    lib->book_count = book_count;
 
-    fread(&lib->member_count, sizeof(int), 1, file);
-    fread(&lib->next_member_id, sizeof(int), 1, file);
+    if (fread(&lib->next_book_id, sizeof(int), 1, file) != 1)
+    {
+        fclose(file);
+        return false;
+    }
 
-    if (lib->member_count > lib->member_capacity)
+    if (fread(lib->books, sizeof(Book), book_count, file) != (size_t)book_count)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (fread(&member_count, sizeof(int), 1, file) != 1)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (member_count < 0 || member_count > MAX_MEMBERS)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (member_count > lib->member_capacity)
     {
         Member *temp = realloc(
             lib->members,
-            lib->member_count * sizeof(Member));
+            member_count * sizeof(Member));
 
         if (temp == NULL)
         {
@@ -116,18 +153,40 @@ bool loadLibrary(Library *lib)
         }
 
         lib->members = temp;
-        lib->member_capacity = lib->member_count;
+        lib->member_capacity = member_count;
     }
 
-    fread(lib->members, sizeof(Member), lib->member_count, file);
+    lib->member_count = member_count;
 
-    fread(&lib->record_count, sizeof(int), 1, file);
-    fread(&lib->next_record_id, sizeof(int), 1, file);
-    if (lib->record_count > lib->record_capacity)
+    if (fread(&lib->next_member_id, sizeof(int), 1, file) != 1)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (fread(lib->members, sizeof(Member), member_count, file) != (size_t)member_count)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (fread(&record_count, sizeof(int), 1, file) != 1)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (record_count < 0 || record_count > MAX_RECORDS)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (record_count > lib->record_capacity)
     {
         BorrowRecord *temp = realloc(
             lib->records,
-            lib->record_count * sizeof(BorrowRecord));
+            record_count * sizeof(BorrowRecord));
 
         if (temp == NULL)
         {
@@ -136,11 +195,28 @@ bool loadLibrary(Library *lib)
         }
 
         lib->records = temp;
-        lib->record_capacity = lib->record_count;
+        lib->record_capacity = record_count;
     }
-    fread(lib->records, sizeof(BorrowRecord), lib->record_count, file);
+
+    lib->record_count = record_count;
+
+    if (fread(&lib->next_record_id, sizeof(int), 1, file) != 1)
+    {
+        fclose(file);
+        return false;
+    }
+
+    if (fread(lib->records,
+              sizeof(BorrowRecord),
+              record_count,
+              file) != (size_t)record_count)
+    {
+        fclose(file);
+        return false;
+    }
 
     fclose(file);
+
     return true;
 };
 
@@ -268,6 +344,7 @@ void mainMenu(Library *lib)
 
         default:
             printf("Invalid choice!\n");
+            break;
         }
 
     } while (choice != 0);

@@ -8,6 +8,12 @@
 #include "../library/library.h"
 #include "../utils/utils.h"
 
+typedef enum
+{
+    SORT_BY_TITLE,
+    SORT_BY_CATEGORY
+} SortType;
+
 Book inputBook(bool is_update)
 {
     Book book;
@@ -17,12 +23,14 @@ Book inputBook(bool is_update)
     int quantity;
 
     printf("\n");
-    printf(
-        "\n"
-        "╔══════════════════════════════════════╗\n"
-        "║               ADD BOOK               ║\n"
-        "╚══════════════════════════════════════╝\n");
-    printf("\n");
+    printf(is_update ? "\n"
+                       "╔══════════════════════════════════════╗\n"
+                       "║             UPDATE BOOK              ║\n"
+                       "╚══════════════════════════════════════╝\n"
+                     : "\n"
+                       "╔══════════════════════════════════════╗\n"
+                       "║               ADD BOOK               ║\n"
+                       "╚══════════════════════════════════════╝\n");
 
     printf("\n(Type 'cancel' at any time to return)\n");
 
@@ -58,19 +66,17 @@ Book inputBook(bool is_update)
 
     while (1)
     {
-        if (!is_update)
+        quantity = getIntInput(
+            is_update ? "New Quantity : " : "Quantity     : ");
+
+        if (quantity <= 0)
         {
-            quantity = getIntInput("Quantity  : ");
-
-            if (quantity <= 0)
-            {
-                printf("Quantity must be greater than 0.\n");
-                continue;
-            }
-
-            book.quantity = quantity;
-            break;
+            printf("Quantity must be greater than 0.\n");
+            continue;
         }
+
+        book.quantity = quantity;
+        break;
     }
 
     strcpy(book.title, title);
@@ -103,7 +109,7 @@ void viewAllBooks(Library *lib)
 {
     if (lib->book_count == 0)
     {
-        printItemNotFound("Book");
+        printItemNotFound("BOOK");
         return;
     }
     for (int i = 0; i < lib->book_count; i++)
@@ -191,9 +197,63 @@ void searchByCategory(Library *lib, char *category)
     }
 
     if (!is_found)
-        printItemNotFound("BOOK");
+        printItemNotFound("CATEGORY");
 }
+void viewBooksSorted(Library *lib, SortType sortType)
+{
+    if (lib->book_count == 0)
+    {
+        printItemNotFound("BOOK");
+        return;
+    }
 
+    int *indices = malloc(lib->book_count * sizeof(int));
+
+    if (indices == NULL)
+    {
+        printf("Memory allocation failed!\n");
+        return;
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        indices[i] = i;
+    }
+
+    for (int i = 0; i < lib->book_count - 1; i++)
+    {
+        for (int j = 0; j < lib->book_count - i - 1; j++)
+        {
+            char *left;
+            char *right;
+
+            if (sortType == SORT_BY_TITLE)
+            {
+                left = lib->books[indices[j]].title;
+                right = lib->books[indices[j + 1]].title;
+            }
+            else
+            {
+                left = lib->books[indices[j]].author;
+                right = lib->books[indices[j + 1]].author;
+            }
+
+            if (strcmp(left, right) > 0)
+            {
+                int temp = indices[j];
+                indices[j] = indices[j + 1];
+                indices[j + 1] = temp;
+            }
+        }
+    }
+
+    for (int i = 0; i < lib->book_count; i++)
+    {
+        viewBooks(lib, indices[i]);
+    }
+
+    free(indices);
+}
 void searchByAuthor(Library *lib, char *author)
 {
     int is_found = 0;
@@ -222,102 +282,22 @@ void searchByAuthor(Library *lib, char *author)
 void viewBooksSortedByTitle(Library *lib)
 {
 
-    if (lib->book_count == 0)
-    {
-        printItemNotFound("Book");
-        return;
-    }
-
-    int *indices = malloc(
-        lib->book_count * sizeof(int));
-
-    if (indices == NULL)
-    {
-        printf("Memory allocation failed!\n");
-        return;
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        indices[i] = i;
-    }
-
-    for (int i = 0; i < lib->book_count - 1; i++)
-    {
-        for (int j = 0; j < lib->book_count - i - 1; j++)
-        {
-            if (strcmp(
-                    lib->books[indices[j]].title,
-                    lib->books[indices[j + 1]].title) > 0)
-            {
-                int temp = indices[j];
-                indices[j] = indices[j + 1];
-                indices[j + 1] = temp;
-            }
-        }
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        viewBooks(lib, indices[i]);
-    }
-
-    free(indices);
+    viewBooksSorted(lib, SORT_BY_TITLE);
 }
 
 void viewBooksSortedByAuthor(Library *lib)
 {
 
-    if (lib->book_count == 0)
-    {
-        printItemNotFound("Book");
-        return;
-    }
-
-    int *indices = malloc(
-        lib->book_count * sizeof(int));
-
-    if (indices == NULL)
-    {
-        printf("Memory allocation failed!\n");
-        return;
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        indices[i] = i;
-    }
-
-    for (int i = 0; i < lib->book_count - 1; i++)
-    {
-        for (int j = 0; j < lib->book_count - i - 1; j++)
-        {
-            if (strcmp(
-                    lib->books[indices[j]].author,
-                    lib->books[indices[j + 1]].author) > 0)
-            {
-                int temp = indices[j];
-                indices[j] = indices[j + 1];
-                indices[j + 1] = temp;
-            }
-        }
-    }
-
-    for (int i = 0; i < lib->book_count; i++)
-    {
-        viewBooks(lib, indices[i]);
-    }
-
-    free(indices);
+    viewBooksSorted(lib, SORT_BY_CATEGORY);
 }
 
-int displayUniqueCat(Library *lib)
+void displayUniqueCat(Library *lib)
 {
     if (lib->book_count == 0)
     {
-        return -1;
+        printItemNotFound("CATEGORY");
+        return;
     }
-    int cat_count = 0;
     for (int i = 0; i < lib->book_count; i++)
     {
         int found = 0;
@@ -336,7 +316,7 @@ int displayUniqueCat(Library *lib)
             if (strcmp(cat1, cat2) == 0)
             {
                 found = 1;
-                cat_count++;
+                // cat_count++;
                 break;
             }
         }
@@ -346,8 +326,6 @@ int displayUniqueCat(Library *lib)
             printf("  %s\n", lib->books[i].category);
         }
     }
-
-    return cat_count;
 }
 
 void displaySearchResult(Library *lib, int idx)
@@ -364,6 +342,7 @@ void displaySearchResult(Library *lib, int idx)
 
 int checkDuplicateBook(Library *lib, char *title, char *author)
 {
+
     for (int i = 0; i < lib->book_count; i++)
     {
         if (compareChar(lib->books[i].title, title) &&
@@ -444,6 +423,7 @@ void addBook(Library *lib)
 void updateBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
+
     if (index == -1)
     {
         printItemNotFound("BOOK");
@@ -455,14 +435,37 @@ void updateBook(Library *lib, int book_id)
     if (book.book_id == -1)
         return;
 
+    int duplicate = checkDuplicateBook(
+        lib,
+        book.title,
+        book.author);
+
+    if (duplicate != -1 && duplicate != index)
+    {
+        printf("Another book with the same title and author already exists.\n");
+        return;
+    }
+
+    int borrowed =
+        lib->books[index].quantity -
+        lib->books[index].available;
+
+    if (book.quantity < borrowed)
+    {
+        printf(
+            "Quantity cannot be less than borrowed books (%d).\n",
+            borrowed);
+        return;
+    }
+
     book.book_id = lib->books[index].book_id;
-    book.quantity = lib->books[index].quantity;
-    book.available = lib->books[index].available;
+
+    book.available = book.quantity - borrowed;
+
     lib->books[index] = book;
 
     printSuccessful("BOOK UPDATED");
 }
-
 void removeBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
@@ -471,6 +474,20 @@ void removeBook(Library *lib, int book_id)
     {
         printItemNotFound("BOOK");
         return;
+    }
+
+    for (int i = 0; i < lib->record_count; i++)
+    {
+        if (lib->records[i].book_id == lib->books[index].book_id &&
+            !lib->records[i].returned)
+        {
+            printf("--------------------------------------\n");
+            printf("            CANNOT REMOVE!            \n");
+            printf("      Book is currently borrowed.     \n");
+            printf("--------------------------------------\n");
+
+            return;
+        }
     }
 
     for (int i = index; i < lib->book_count - 1; i++)
@@ -542,6 +559,9 @@ void bookMenu(Library *lib)
         case 2:
             int view_book_choice = 0;
             viewAllBooks(lib);
+
+            if (lib->book_count == 0)
+                break;
             do
             {
                 printf(
@@ -664,23 +684,16 @@ void bookMenu(Library *lib)
                         "│       Search by Category      │\n"
                         "└───────────────────────────────┘\n");
 
-                    if (displayUniqueCat(lib) == -1)
-                    {
-                        printItemNotFound("CATEGORY");
-                    }
-                    else
-                    {
-                        printf("┌───────────────────────────────┐\n");
+                    printf("┌───────────────────────────────┐\n");
 
-                        displayUniqueCat(lib);
+                    displayUniqueCat(lib);
 
-                        printf("└───────────────────────────────┘\n");
-                        printf("Enter Book Category: ");
-                        fgets(category, sizeof(category), stdin);
-                        category[strcspn(category, "\n")] = '\0';
-                        searchByCategory(lib, category);
-                        break;
-                    }
+                    printf("└───────────────────────────────┘\n");
+
+                    getRequiredInput("Enter Book Category: ", category, sizeof(category), "Category");
+
+                    searchByCategory(lib, category);
+                    break;
 
                     break;
                 case 0:

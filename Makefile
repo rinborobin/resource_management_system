@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall -Wextra
 
-SRC = main.c book.c member.c borrow.c library.c utils.c
-TARGET = lib
+SRC = main.c src/*/*.c
+TARGET = library.exe
 
 all:
 	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
