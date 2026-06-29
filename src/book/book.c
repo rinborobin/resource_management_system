@@ -23,12 +23,14 @@ Book inputBook(bool is_update)
     int quantity;
 
     printf("\n");
-    printf(
-        "\n"
-        "╔══════════════════════════════════════╗\n"
-        "║               ADD BOOK               ║\n"
-        "╚══════════════════════════════════════╝\n");
-    printf("\n");
+    printf(is_update ? "\n"
+                       "╔══════════════════════════════════════╗\n"
+                       "║             UPDATE BOOK              ║\n"
+                       "╚══════════════════════════════════════╝\n"
+                     : "\n"
+                       "╔══════════════════════════════════════╗\n"
+                       "║               ADD BOOK               ║\n"
+                       "╚══════════════════════════════════════╝\n");
 
     printf("\n(Type 'cancel' at any time to return)\n");
 
@@ -64,19 +66,17 @@ Book inputBook(bool is_update)
 
     while (1)
     {
-        if (!is_update)
+        quantity = getIntInput(
+            is_update ? "New Quantity : " : "Quantity     : ");
+
+        if (quantity <= 0)
         {
-            quantity = getIntInput("Quantity  : ");
-
-            if (quantity <= 0)
-            {
-                printf("Quantity must be greater than 0.\n");
-                continue;
-            }
-
-            book.quantity = quantity;
-            break;
+            printf("Quantity must be greater than 0.\n");
+            continue;
         }
+
+        book.quantity = quantity;
+        break;
     }
 
     strcpy(book.title, title);
@@ -109,7 +109,7 @@ void viewAllBooks(Library *lib)
 {
     if (lib->book_count == 0)
     {
-        printItemNotFound("Book");
+        printItemNotFound("BOOK");
         return;
     }
     for (int i = 0; i < lib->book_count; i++)
@@ -197,13 +197,13 @@ void searchByCategory(Library *lib, char *category)
     }
 
     if (!is_found)
-        printItemNotFound("BOOK");
+        printItemNotFound("CATEGORY");
 }
 void viewBooksSorted(Library *lib, SortType sortType)
 {
     if (lib->book_count == 0)
     {
-        printItemNotFound("Book");
+        printItemNotFound("BOOK");
         return;
     }
 
@@ -291,13 +291,13 @@ void viewBooksSortedByAuthor(Library *lib)
     viewBooksSorted(lib, SORT_BY_CATEGORY);
 }
 
-int displayUniqueCat(Library *lib)
+void displayUniqueCat(Library *lib)
 {
     if (lib->book_count == 0)
     {
-        return -1;
+        printItemNotFound("CATEGORY");
+        return;
     }
-    int cat_count = 0;
     for (int i = 0; i < lib->book_count; i++)
     {
         int found = 0;
@@ -316,7 +316,7 @@ int displayUniqueCat(Library *lib)
             if (strcmp(cat1, cat2) == 0)
             {
                 found = 1;
-                cat_count++;
+                // cat_count++;
                 break;
             }
         }
@@ -326,8 +326,6 @@ int displayUniqueCat(Library *lib)
             printf("  %s\n", lib->books[i].category);
         }
     }
-
-    return cat_count;
 }
 
 void displaySearchResult(Library *lib, int idx)
@@ -448,8 +446,6 @@ void updateBook(Library *lib, int book_id)
         return;
     }
 
-    book.book_id = lib->books[index].book_id;
-
     int borrowed =
         lib->books[index].quantity -
         lib->books[index].available;
@@ -462,13 +458,14 @@ void updateBook(Library *lib, int book_id)
         return;
     }
 
+    book.book_id = lib->books[index].book_id;
+
     book.available = book.quantity - borrowed;
 
     lib->books[index] = book;
 
     printSuccessful("BOOK UPDATED");
 }
-
 void removeBook(Library *lib, int book_id)
 {
     int index = searchBookByID(lib, book_id);
@@ -562,6 +559,9 @@ void bookMenu(Library *lib)
         case 2:
             int view_book_choice = 0;
             viewAllBooks(lib);
+
+            if (lib->book_count == 0)
+                break;
             do
             {
                 printf(
@@ -684,23 +684,16 @@ void bookMenu(Library *lib)
                         "│       Search by Category      │\n"
                         "└───────────────────────────────┘\n");
 
-                    if (displayUniqueCat(lib) == -1)
-                    {
-                        printItemNotFound("CATEGORY");
-                    }
-                    else
-                    {
-                        printf("┌───────────────────────────────┐\n");
+                    printf("┌───────────────────────────────┐\n");
 
-                        displayUniqueCat(lib);
+                    displayUniqueCat(lib);
 
-                        printf("└───────────────────────────────┘\n");
-                        printf("Enter Book Category: ");
-                        fgets(category, sizeof(category), stdin);
-                        category[strcspn(category, "\n")] = '\0';
-                        searchByCategory(lib, category);
-                        break;
-                    }
+                    printf("└───────────────────────────────┘\n");
+
+                    getRequiredInput("Enter Book Category: ", category, sizeof(category), "Category");
+
+                    searchByCategory(lib, category);
+                    break;
 
                     break;
                 case 0:
