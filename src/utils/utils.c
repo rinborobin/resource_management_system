@@ -7,6 +7,17 @@
 
 #include "utils.h"
 
+bool containsDigit(const char *str)
+{
+    while (*str)
+    {
+        if (isdigit((unsigned char)*str))
+            return true;
+        str++;
+    }
+    return false;
+}
+
 void getCurrentDate(char *date)
 {
     time_t t = time(NULL);

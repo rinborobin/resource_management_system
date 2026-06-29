@@ -1,6 +1,7 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+bool containsDigit(const char *str);
 void getCurrentDate(char *date);
 void trim(char *str);
 bool getInput(char *prompt, char *buffer, int size);
